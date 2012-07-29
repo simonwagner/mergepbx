@@ -33,20 +33,24 @@ Download the prebuilt script from **todo insert location here**.
 
 ### Add script as merge driver ###
 
-Open ~/.gitconfig (create if it does not exist) and add the following lines to it:
+Open `~/.gitconfig` (create if it does not exist) and add the following lines to it:
 
+```
 \#driver for merging XCode project files
 [merge "mergepbx"]
         name = XCode project files merger
         driver = mergepbx %O %A %B
+```
 
 Replace mergepbx with the path to the file you downloaded (You might want to add that file to your $PATH)
 
 ### Configure your repository to use the driver ###
 
-In your repository root directory, open the file .gitattributes (create if it does not exist). Add the following lines to it:
+In your repository root directory, open the file `.gitattributes` (create if it does not exist). Add the following lines to it:
 
+```
 *.pbxproj merge=mergepbx
+```
 
 ### Merging project files ###
 
@@ -56,9 +60,11 @@ Note that this script is not really fast, I didn't optimize it for speed and esp
 
 ## Alternatives ##
 
-An alternative to using this script, is to use the union merge driver of git, by adding the following line to .gitattributes:
+An alternative to using this script, is to use the union merge driver of git, by adding the following line to `.gitattributes`:
 
+```
 *.pbxproj merge=union
+```
 
 This tells git to combine the files by adding lines from both, the remote file and your local file. That works most of the time, however it is not bulletproof, as git still has no idea what it is doing here.
 If my script does not work for you, you can however try out this strategy.
