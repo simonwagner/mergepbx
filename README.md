@@ -29,7 +29,7 @@ To use this script, you have to configure it as a merge driver for you project f
 
 ### Download ###
 
-Download the prebuilt script from **todo insert location here**.
+Download the prebuilt script from [here](https://github.com/downloads/simonwagner/mergepbx/mergepbx).
 
 ### Add script as merge driver ###
 
