@@ -36,7 +36,7 @@ Download the prebuilt script from **todo insert location here**.
 Open `~/.gitconfig` (create if it does not exist) and add the following lines to it:
 
 ```
-\#driver for merging XCode project files
+#driver for merging XCode project files
 [merge "mergepbx"]
         name = XCode project files merger
         driver = mergepbx %O %A %B
