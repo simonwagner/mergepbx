@@ -1,0 +1,13 @@
+[build]
+mainmodule=mergepbx
+mainmodule_path=src/mergepbx.py
+modules=orderedset,pbxproj,plist
+
+[orderedset]
+path=src/orderedset
+
+[pbxproj]
+path=src/pbxproj
+
+[plist]
+path=src/plist
