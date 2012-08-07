@@ -113,6 +113,16 @@ class PBXResourcesBuildPhase(PBXISA, PBXISADictionaryBound):
     def get_name(self, project):
         return "Resources"
 
+class PBXShellScriptBuildPhase(PBXISA, PBXISADictionaryBound):
+    def __init__(self, *args, **kwargs):
+        super(PBXShellScriptBuildPhase, self).__init__(*args, **kwargs)
+
+    def get_name(self, project):
+        if hasattr(self, "name"):
+            return self.name
+        else:
+            return None
+
 class PBXSourcesBuildPhase(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
         super(PBXSourcesBuildPhase, self).__init__(*args, **kwargs)

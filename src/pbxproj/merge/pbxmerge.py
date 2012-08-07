@@ -273,6 +273,11 @@ class PBXLegacyTargetMerger3(_AbstractTargetMerger3):
 class PBXNativeTargetMerger3(_AbstractTargetMerger3):
     pass
 
+class PBXShellScriptBuildPhaseMerger3(_AbstractTargetMerger3):
+    merge_buildPhases = create_auto_merge_set("inputPaths", optional = True)
+    merge_dependencies = create_auto_merge_set("outputPaths", optional = True)
+    merge_files = create_auto_merge_set("files", optional = True)
+
 class PBXReferenceProxyMerger3(_SimpleDictMerger3):
     pass
 
