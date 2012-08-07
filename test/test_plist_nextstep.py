@@ -1,6 +1,7 @@
 from plist.parser import ParserGrammar, Parser, Rule, Terminal, NonTerminal, TokenStream
 from plist.lexer import LexerGrammar, Pattern, Lexer
 import sys
+from StringIO import StringIO
 if sys.version_info >= (2,7):
     import unittest
 else:
@@ -13,4 +14,21 @@ testLexerGrammar = plist.nextstep.LEXER_GRAMMAR
 testParserGrammar = plist.nextstep.PARSER_GRAMMAR
 
 class ParserTest(unittest.TestCase):
-    pass
+    def test_simple_dict(self):
+        input = """{a = valuea; b = valueb;}"""
+        expected = {"a" : "valuea", "b" : "valueb"}
+
+        self.assertPlistEquals(input, expected)
+
+    def test_simple_array(self):
+        input = """(a,b,c)"""
+        expected = ["a", "b", "c"]
+
+        self.assertPlistEquals(input, expected)
+
+
+    def assertPlistEquals(self, input, expected, msg=None):
+        r = NSPlistReader(StringIO(input))
+        actual = r.read()
+
+        self.assertEquals(actual, expected, msg)
