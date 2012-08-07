@@ -18,7 +18,7 @@ LEXER_GRAMMAR = LexerGrammar((
     ("BRACE_OPEN", r"\{"),
     ("BRACE_CLOSE", r"\}"),
     ("STRING", r'\"((([^\\"]|(\\"|\\\\)))*)\"'),
-    ("IDENTIFIER", IDENTIFIER_RE)
+    ("IDENTIFIER", r"([^;\s=\(\)\{\}\,\"\<\>]+)")
 ))
 
 PARSER_GRAMMAR = ParserGrammar((
