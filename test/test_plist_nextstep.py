@@ -26,6 +26,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertPlistEquals(input, expected)
 
+    def test_complex_string(self):
+        input = """{a = "\\"abc\\"\\nlinebreak"; b = valueb;}"""
+        expected = {"a" : "\"abc\"\nlinebreak", "b" : "valueb"}
+
+        self.assertPlistEquals(input, expected)
+
 
     def assertPlistEquals(self, input, expected, msg=None):
         r = NSPlistReader(StringIO(input))
