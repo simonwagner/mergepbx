@@ -14,8 +14,9 @@ class _lazylist(object):
         return repr(self.list)
 
 class TokenIter(object):
-    def __init__(self, iterator):
+    def __init__(self, iterator, lexer = None):
         self.iterator = iterator
+        self.lexer = lexer
         self.buffer = []
         self.logger = logging.getLogger("plist.parser.tokeniter")
 
@@ -51,12 +52,16 @@ class TokenIter(object):
     def push_tokens(self, tokens):
         self.buffer.extend(tokens)            
 
+    def expect(self, token_name):
+        if not self.lexer is None:
+            self.lexer.expect(token_name)
+
 class TokenStream(object):
     def __init__(self, lexer, input, ignore_tokens=[]):
         self.ignore_tokens = set(ignore_tokens)
         #self.token_iter = (token for token in lexer.scan(input) if not token.name in self.ignore_tokens)
         token_generator = (token for token in lexer.scan(input) if not token.name in self.ignore_tokens)
-        self.token_iter = TokenIter(token_generator)
+        self.token_iter = TokenIter(token_generator, lexer)
 
     def peek(self, n=1):
         peeked_elements = self._read_tokens(n)
@@ -72,6 +77,9 @@ class TokenStream(object):
     def push_tokens(self, tokens):
         #self.token_iter = chain(tokens, self.token_iter)
         self.token_iter.push_tokens(tokens)
+
+    def expect(self, token_name):
+        self.token_iter.expect(token_name)
 
     def _read_tokens(self, n):
         return list(islice(self.token_iter, 0, n))
@@ -133,6 +141,9 @@ class BacktrackingTokenStream(TokenStream):
 
     def peek(self, n=1):
         return self.token_stream.peek(n)
+
+    def expect(self, token_name):
+        self.token_stream.expect(token_name)
 
     def _read_tokens(self, n):
         return self.token_stream._read_tokens(n)

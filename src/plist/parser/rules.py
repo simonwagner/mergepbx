@@ -131,6 +131,8 @@ class Terminal(RuleElement):
         self.expected_token_name = token_name
 
     def match(self, parser, tree_builder, token_stream):
+        token_stream.expect(self.expected_token_name)
+
         tokens = token_stream.peek(1)
         token = tokens[0] if len(tokens) > 0 else None
         logger.debug("matching terminal %s" % self.expected_token_name)
