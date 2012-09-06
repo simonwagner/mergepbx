@@ -3,11 +3,11 @@ from . import isa
 
 class PBXProjFile(DictionaryBoundObject):
     MAPPED_ATTRIBUTES = ("archiveVersion", "objectVersion", "rootObject")
-    def __init__(self, plist):
+    def __init__(self, plist, ignore_unknown_objects=False):
         super(self.__class__, self).__init__(plist, self.__class__.MAPPED_ATTRIBUTES)
         self._plist = plist
         self._classes = PBXClasses(self._plist["classes"])
-        self._objects = PBXObjects(self._plist["objects"])
+        self._objects = PBXObjects(self._plist["objects"], ignore_unknown_objects)
         self._load_phases()
 
     def _load_phases(self):
@@ -36,8 +36,9 @@ class PBXClasses(object):
         self.data_dict = data_dict
 
 class PBXObjects(object):
-    def __init__(self, data_dict):
+    def __init__(self, data_dict, ignore_unknown_objects):
         self.data_dict = data_dict
+        self.ignore_unknown_objects = ignore_unknown_objects
 
     def keys(self):
         return self.data_dict.keys()
@@ -46,8 +47,13 @@ class PBXObjects(object):
         return self._make_isa_object(key, self.data_dict[key])
 
     def iterobjects(self, isa=None):
+        if self.ignore_unknown_objects:
+            items_iter = ((key, value) for key,value in self.data_dict.iteritems() if isa.is_known(value["isa"]))
+        else:
+            items_iter = self.data_dict.iteritems()
+
         return (
-            (key, self._make_isa_object(key, value)) for key, value in self.data_dict.iteritems() \
+            (key, self._make_isa_object(key, value)) for key, value in items_iter \
             if isa == None or value["isa"] == isa
         )
 

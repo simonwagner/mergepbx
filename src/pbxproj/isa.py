@@ -181,6 +181,9 @@ ISA_MAPPING = dict(
     ((clazz.__name__, clazz) for varname, clazz in local_vars.iteritems() if isclass(clazz) and issubclass(clazz, PBXISA))
 )
 
+def is_known(isa):
+    return isa in ISA_MAPPING
+
 def create(identifier, isa_dict):
     isa = isa_dict["isa"]
     isa_class = ISA_MAPPING[isa]
