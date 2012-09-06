@@ -15,10 +15,16 @@ class RuleElement(object):
         return OptionalRule(self)
 
     def __add__(rule1, rule2):
-        return ConcatinatedRules((rule1, rule2))
+        if isinstance(rule1, ConcatinatedRules) and isinstance(rule2, ConcatinatedRules):
+            return ConcatinatedRules(rule1.rules + rule2.rules)
+        else:
+            return ConcatinatedRules((rule1, rule2))
 
     def __or__(rule1, rule2):
-        return AlternativeRules((rule1, rule2))
+        if isinstance(rule1, AlternativeRules) and isinstance(rule2, AlternativeRules):
+            return AlternativeRules(rule1.rules + rule2.rules)
+        else:
+            return AlternativeRules((rule1, rule2))
 
 class ConcatinatedRules(RuleElement):
     def __init__(self, rules):
