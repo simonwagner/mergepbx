@@ -17,7 +17,7 @@ import fnmatch
 
 #templates
 HEADER = \
-"""
+"""\
 #!/bin/sh
 PYTHON=$(which python 2>/dev/null)
 if [ ! -x "$PYTHON" ] ; then
