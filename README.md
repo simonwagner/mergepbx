@@ -27,9 +27,15 @@ Note also, that this script can't solve conflicts, that are really conflicts. Fo
 
 To use this script, you have to configure it as a merge driver for you project file. To do this, you have to take the following steps:
 
-### Download ###
+### Building ###
 
-Download the prebuilt script from [here](https://github.com/downloads/simonwagner/mergepbx/mergepbx).
+Execute the following command in the directory of the cloned project:
+
+```
+./build.py mergepbx MANIFEST
+```
+
+That should build the mergepbx executable that you can use. It is a specially crafted zip file that contains all needed python files and can directly be executed on the commandline
 
 ### Add script as merge driver ###
 
