@@ -1,5 +1,3 @@
-from plist.parser import ParserGrammar, Parser, Rule, Terminal, NonTerminal, TokenStream
-from plist.lexer import LexerGrammar, Pattern, Lexer
 import sys
 from StringIO import StringIO
 if sys.version_info >= (2,7):
