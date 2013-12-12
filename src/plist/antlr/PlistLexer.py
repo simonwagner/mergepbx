@@ -1,4 +1,4 @@
-# $ANTLR 3.2 Sep 23, 2009 12:02:23 Plist.g 2013-12-12 17:09:06
+# $ANTLR 3.2 Sep 23, 2009 12:02:23 Plist.g 2013-12-12 18:02:36
 
 import sys
 from antlr3 import *
@@ -9,28 +9,28 @@ from antlr3.compat import set, frozenset
 HIDDEN = BaseRecognizer.HIDDEN
 
 # token types
-BRACE_OPEN=14
-ESC_SEQ=8
-WS=6
-BRACE_CLOSE=15
+BRACE_OPEN=13
+WS=16
+ESC_SEQ=7
+BRACE_CLOSE=14
 WS_CHAR=5
-IDENTIFIER=7
-DICTIONARY_SEPERATOR=11
-ARRAY_SEPERATOR=10
+IDENTIFIER=6
+DICTIONARY_SEPERATOR=10
+ARRAY_SEPERATOR=9
 HEX_DIGIT=17
-ASSIGNMENT=16
+ASSIGNMENT=15
 COMMENT=4
 EOF=-1
-BRACKET_CLOSE=13
-STRING=9
-BRACKET_OPEN=12
+BRACKET_CLOSE=12
+STRING=8
+BRACKET_OPEN=11
 
 
 class PlistLexer(Lexer):
 
     grammarFileName = "Plist.g"
     antlr_version = version_str_to_tuple("3.1 Sep 23, 2009 12:02:23")
-    antlr_version_str = "3.2 Sep 23, 2009 12:02:23"
+    antlr_version_str = "3.1 Sep 23, 2009 12:02:23"
 
     def __init__(self, input=None, state=None):
         if state is None:
@@ -179,40 +179,6 @@ class PlistLexer(Lexer):
 
 
 
-    # $ANTLR start "WS"
-    def mWS(self, ):
-
-        try:
-            _type = WS
-            _channel = DEFAULT_CHANNEL
-
-            # Plist.g:32:4: ( ( WS_CHAR ) )
-            # Plist.g:32:6: ( WS_CHAR )
-            pass 
-            # Plist.g:32:6: ( WS_CHAR )
-            # Plist.g:32:7: WS_CHAR
-            pass 
-            self.mWS_CHAR()
-
-
-
-            #action start
-            _channel=HIDDEN;
-            #action end
-
-
-
-            self._state.type = _type
-            self._state.channel = _channel
-
-        finally:
-
-            pass
-
-    # $ANTLR end "WS"
-
-
-
     # $ANTLR start "IDENTIFIER"
     def mIDENTIFIER(self, ):
 
@@ -220,10 +186,10 @@ class PlistLexer(Lexer):
             _type = IDENTIFIER
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:36:5: ( (~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' ) )+ )
-            # Plist.g:36:7: (~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' ) )+
+            # Plist.g:33:5: ( (~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' ) )+ )
+            # Plist.g:33:7: (~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' ) )+
             pass 
-            # Plist.g:36:7: (~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' ) )+
+            # Plist.g:33:7: (~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' ) )+
             cnt5 = 0
             while True: #loop5
                 alt5 = 2
@@ -234,7 +200,7 @@ class PlistLexer(Lexer):
 
 
                 if alt5 == 1:
-                    # Plist.g:36:8: ~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' )
+                    # Plist.g:33:8: ~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' )
                     pass 
                     if (0 <= self.input.LA(1) <= 8) or (11 <= self.input.LA(1) <= 12) or (14 <= self.input.LA(1) <= 31) or self.input.LA(1) == 33 or (35 <= self.input.LA(1) <= 39) or (42 <= self.input.LA(1) <= 43) or (45 <= self.input.LA(1) <= 58) or (63 <= self.input.LA(1) <= 122) or self.input.LA(1) == 124 or (126 <= self.input.LA(1) <= 65535):
                         self.input.consume()
@@ -274,11 +240,11 @@ class PlistLexer(Lexer):
             _type = STRING
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:40:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
-            # Plist.g:40:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
+            # Plist.g:37:5: ( '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"' )
+            # Plist.g:37:8: '\"' ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )* '\"'
             pass 
             self.match(34)
-            # Plist.g:40:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
+            # Plist.g:37:12: ( ESC_SEQ | ~ ( '\\\\' | '\"' ) )*
             while True: #loop6
                 alt6 = 3
                 LA6_0 = self.input.LA(1)
@@ -290,13 +256,13 @@ class PlistLexer(Lexer):
 
 
                 if alt6 == 1:
-                    # Plist.g:40:14: ESC_SEQ
+                    # Plist.g:37:14: ESC_SEQ
                     pass 
                     self.mESC_SEQ()
 
 
                 elif alt6 == 2:
-                    # Plist.g:40:24: ~ ( '\\\\' | '\"' )
+                    # Plist.g:37:24: ~ ( '\\\\' | '\"' )
                     pass 
                     if (0 <= self.input.LA(1) <= 33) or (35 <= self.input.LA(1) <= 91) or (93 <= self.input.LA(1) <= 65535):
                         self.input.consume()
@@ -331,8 +297,8 @@ class PlistLexer(Lexer):
             _type = ARRAY_SEPERATOR
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:44:2: ( ',' )
-            # Plist.g:44:4: ','
+            # Plist.g:41:2: ( ',' )
+            # Plist.g:41:4: ','
             pass 
             self.match(44)
 
@@ -356,8 +322,8 @@ class PlistLexer(Lexer):
             _type = DICTIONARY_SEPERATOR
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:48:2: ( ';' )
-            # Plist.g:48:4: ';'
+            # Plist.g:45:2: ( ';' )
+            # Plist.g:45:4: ';'
             pass 
             self.match(59)
 
@@ -381,8 +347,8 @@ class PlistLexer(Lexer):
             _type = BRACKET_OPEN
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:52:2: ( '(' )
-            # Plist.g:52:4: '('
+            # Plist.g:49:2: ( '(' )
+            # Plist.g:49:4: '('
             pass 
             self.match(40)
 
@@ -406,8 +372,8 @@ class PlistLexer(Lexer):
             _type = BRACKET_CLOSE
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:56:2: ( ')' )
-            # Plist.g:56:4: ')'
+            # Plist.g:53:2: ( ')' )
+            # Plist.g:53:4: ')'
             pass 
             self.match(41)
 
@@ -431,8 +397,8 @@ class PlistLexer(Lexer):
             _type = BRACE_OPEN
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:60:2: ( '{' )
-            # Plist.g:60:4: '{'
+            # Plist.g:57:2: ( '{' )
+            # Plist.g:57:4: '{'
             pass 
             self.match(123)
 
@@ -456,8 +422,8 @@ class PlistLexer(Lexer):
             _type = BRACE_CLOSE
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:64:2: ( '}' )
-            # Plist.g:64:4: '}'
+            # Plist.g:61:2: ( '}' )
+            # Plist.g:61:4: '}'
             pass 
             self.match(125)
 
@@ -481,8 +447,8 @@ class PlistLexer(Lexer):
             _type = ASSIGNMENT
             _channel = DEFAULT_CHANNEL
 
-            # Plist.g:68:9: ( '=' )
-            # Plist.g:68:11: '='
+            # Plist.g:65:9: ( '=' )
+            # Plist.g:65:11: '='
             pass 
             self.match(61)
 
@@ -496,6 +462,40 @@ class PlistLexer(Lexer):
             pass
 
     # $ANTLR end "ASSIGNMENT"
+
+
+
+    # $ANTLR start "WS"
+    def mWS(self, ):
+
+        try:
+            _type = WS
+            _channel = DEFAULT_CHANNEL
+
+            # Plist.g:68:4: ( ( WS_CHAR ) )
+            # Plist.g:68:6: ( WS_CHAR )
+            pass 
+            # Plist.g:68:6: ( WS_CHAR )
+            # Plist.g:68:7: WS_CHAR
+            pass 
+            self.mWS_CHAR()
+
+
+
+            #action start
+            _channel=HIDDEN;
+            #action end
+
+
+
+            self._state.type = _type
+            self._state.channel = _channel
+
+        finally:
+
+            pass
+
+    # $ANTLR end "WS"
 
 
 
@@ -579,7 +579,7 @@ class PlistLexer(Lexer):
 
 
     def mTokens(self):
-        # Plist.g:1:8: ( COMMENT | WS | IDENTIFIER | STRING | ARRAY_SEPERATOR | DICTIONARY_SEPERATOR | BRACKET_OPEN | BRACKET_CLOSE | BRACE_OPEN | BRACE_CLOSE | ASSIGNMENT )
+        # Plist.g:1:8: ( COMMENT | IDENTIFIER | STRING | ARRAY_SEPERATOR | DICTIONARY_SEPERATOR | BRACKET_OPEN | BRACKET_CLOSE | BRACE_OPEN | BRACE_CLOSE | ASSIGNMENT | WS )
         alt7 = 11
         alt7 = self.dfa7.predict(self.input)
         if alt7 == 1:
@@ -589,63 +589,63 @@ class PlistLexer(Lexer):
 
 
         elif alt7 == 2:
-            # Plist.g:1:18: WS
-            pass 
-            self.mWS()
-
-
-        elif alt7 == 3:
-            # Plist.g:1:21: IDENTIFIER
+            # Plist.g:1:18: IDENTIFIER
             pass 
             self.mIDENTIFIER()
 
 
-        elif alt7 == 4:
-            # Plist.g:1:32: STRING
+        elif alt7 == 3:
+            # Plist.g:1:29: STRING
             pass 
             self.mSTRING()
 
 
-        elif alt7 == 5:
-            # Plist.g:1:39: ARRAY_SEPERATOR
+        elif alt7 == 4:
+            # Plist.g:1:36: ARRAY_SEPERATOR
             pass 
             self.mARRAY_SEPERATOR()
 
 
-        elif alt7 == 6:
-            # Plist.g:1:55: DICTIONARY_SEPERATOR
+        elif alt7 == 5:
+            # Plist.g:1:52: DICTIONARY_SEPERATOR
             pass 
             self.mDICTIONARY_SEPERATOR()
 
 
-        elif alt7 == 7:
-            # Plist.g:1:76: BRACKET_OPEN
+        elif alt7 == 6:
+            # Plist.g:1:73: BRACKET_OPEN
             pass 
             self.mBRACKET_OPEN()
 
 
-        elif alt7 == 8:
-            # Plist.g:1:89: BRACKET_CLOSE
+        elif alt7 == 7:
+            # Plist.g:1:86: BRACKET_CLOSE
             pass 
             self.mBRACKET_CLOSE()
 
 
-        elif alt7 == 9:
-            # Plist.g:1:103: BRACE_OPEN
+        elif alt7 == 8:
+            # Plist.g:1:100: BRACE_OPEN
             pass 
             self.mBRACE_OPEN()
 
 
-        elif alt7 == 10:
-            # Plist.g:1:114: BRACE_CLOSE
+        elif alt7 == 9:
+            # Plist.g:1:111: BRACE_CLOSE
             pass 
             self.mBRACE_CLOSE()
 
 
-        elif alt7 == 11:
-            # Plist.g:1:126: ASSIGNMENT
+        elif alt7 == 10:
+            # Plist.g:1:123: ASSIGNMENT
             pass 
             self.mASSIGNMENT()
+
+
+        elif alt7 == 11:
+            # Plist.g:1:134: WS
+            pass 
+            self.mWS()
 
 
 
@@ -656,7 +656,7 @@ class PlistLexer(Lexer):
     # lookup tables for DFA #7
 
     DFA7_eot = DFA.unpack(
-        u"\1\uffff\1\3\12\uffff\3\3\1\uffff\2\3\1\17"
+        u"\1\uffff\1\2\12\uffff\3\2\1\uffff\2\2\1\17"
         )
 
     DFA7_eof = DFA.unpack(
@@ -677,14 +677,14 @@ class PlistLexer(Lexer):
         )
 
     DFA7_special = DFA.unpack(
-        u"\1\5\13\uffff\1\1\1\4\1\6\1\uffff\1\3\1\2\1\0"
+        u"\1\5\13\uffff\1\0\1\6\1\1\1\uffff\1\4\1\2\1\3"
         )
 
             
     DFA7_transition = [
-        DFA.unpack(u"\11\3\2\2\2\3\1\2\22\3\1\2\1\3\1\4\5\3\1\7\1\10\2\3"
-        u"\1\5\2\3\1\1\13\3\1\6\1\uffff\1\13\1\uffff\74\3\1\11\1\3\1\12\uff82"
-        u"\3"),
+        DFA.unpack(u"\11\2\2\13\2\2\1\13\22\2\1\13\1\2\1\3\5\2\1\6\1\7\2"
+        u"\2\1\4\2\2\1\1\13\2\1\5\1\uffff\1\12\1\uffff\74\2\1\10\1\2\1\11"
+        u"\uff82\2"),
         DFA.unpack(u"\1\15\4\uffff\1\14"),
         DFA.unpack(u""),
         DFA.unpack(u""),
@@ -730,21 +730,6 @@ class PlistLexer(Lexer):
             _s = s
 
             if s == 0: 
-                LA7_18 = input.LA(1)
-
-                s = -1
-                if (LA7_18 == 42):
-                    s = 16
-
-                elif ((0 <= LA7_18 <= 8) or (11 <= LA7_18 <= 12) or (14 <= LA7_18 <= 31) or LA7_18 == 33 or (35 <= LA7_18 <= 39) or LA7_18 == 43 or (45 <= LA7_18 <= 58) or (63 <= LA7_18 <= 122) or LA7_18 == 124 or (126 <= LA7_18 <= 65535)):
-                    s = 17
-
-                else:
-                    s = 15
-
-                if s >= 0:
-                    return s
-            elif s == 1: 
                 LA7_12 = input.LA(1)
 
                 s = -1
@@ -755,7 +740,22 @@ class PlistLexer(Lexer):
                     s = 15
 
                 else:
-                    s = 3
+                    s = 2
+
+                if s >= 0:
+                    return s
+            elif s == 1: 
+                LA7_14 = input.LA(1)
+
+                s = -1
+                if ((9 <= LA7_14 <= 10) or LA7_14 == 13 or LA7_14 == 32 or LA7_14 == 34 or (40 <= LA7_14 <= 41) or LA7_14 == 44 or (59 <= LA7_14 <= 62) or LA7_14 == 123 or LA7_14 == 125):
+                    s = 15
+
+                elif ((0 <= LA7_14 <= 8) or (11 <= LA7_14 <= 12) or (14 <= LA7_14 <= 31) or LA7_14 == 33 or (35 <= LA7_14 <= 39) or (42 <= LA7_14 <= 43) or (45 <= LA7_14 <= 58) or (63 <= LA7_14 <= 122) or LA7_14 == 124 or (126 <= LA7_14 <= 65535)):
+                    s = 14
+
+                else:
+                    s = 2
 
                 if s >= 0:
                     return s
@@ -773,11 +773,26 @@ class PlistLexer(Lexer):
                     s = 15
 
                 else:
-                    s = 3
+                    s = 2
 
                 if s >= 0:
                     return s
             elif s == 3: 
+                LA7_18 = input.LA(1)
+
+                s = -1
+                if (LA7_18 == 42):
+                    s = 16
+
+                elif ((0 <= LA7_18 <= 8) or (11 <= LA7_18 <= 12) or (14 <= LA7_18 <= 31) or LA7_18 == 33 or (35 <= LA7_18 <= 39) or LA7_18 == 43 or (45 <= LA7_18 <= 58) or (63 <= LA7_18 <= 122) or LA7_18 == 124 or (126 <= LA7_18 <= 65535)):
+                    s = 17
+
+                else:
+                    s = 15
+
+                if s >= 0:
+                    return s
+            elif s == 4: 
                 LA7_16 = input.LA(1)
 
                 s = -1
@@ -794,11 +809,50 @@ class PlistLexer(Lexer):
                     s = 15
 
                 else:
-                    s = 3
+                    s = 2
 
                 if s >= 0:
                     return s
-            elif s == 4: 
+            elif s == 5: 
+                LA7_0 = input.LA(1)
+
+                s = -1
+                if (LA7_0 == 47):
+                    s = 1
+
+                elif ((0 <= LA7_0 <= 8) or (11 <= LA7_0 <= 12) or (14 <= LA7_0 <= 31) or LA7_0 == 33 or (35 <= LA7_0 <= 39) or (42 <= LA7_0 <= 43) or (45 <= LA7_0 <= 46) or (48 <= LA7_0 <= 58) or (63 <= LA7_0 <= 122) or LA7_0 == 124 or (126 <= LA7_0 <= 65535)):
+                    s = 2
+
+                elif (LA7_0 == 34):
+                    s = 3
+
+                elif (LA7_0 == 44):
+                    s = 4
+
+                elif (LA7_0 == 59):
+                    s = 5
+
+                elif (LA7_0 == 40):
+                    s = 6
+
+                elif (LA7_0 == 41):
+                    s = 7
+
+                elif (LA7_0 == 123):
+                    s = 8
+
+                elif (LA7_0 == 125):
+                    s = 9
+
+                elif (LA7_0 == 61):
+                    s = 10
+
+                elif ((9 <= LA7_0 <= 10) or LA7_0 == 13 or LA7_0 == 32):
+                    s = 11
+
+                if s >= 0:
+                    return s
+            elif s == 6: 
                 LA7_13 = input.LA(1)
 
                 s = -1
@@ -812,61 +866,7 @@ class PlistLexer(Lexer):
                     s = 15
 
                 else:
-                    s = 3
-
-                if s >= 0:
-                    return s
-            elif s == 5: 
-                LA7_0 = input.LA(1)
-
-                s = -1
-                if (LA7_0 == 47):
-                    s = 1
-
-                elif ((9 <= LA7_0 <= 10) or LA7_0 == 13 or LA7_0 == 32):
                     s = 2
-
-                elif ((0 <= LA7_0 <= 8) or (11 <= LA7_0 <= 12) or (14 <= LA7_0 <= 31) or LA7_0 == 33 or (35 <= LA7_0 <= 39) or (42 <= LA7_0 <= 43) or (45 <= LA7_0 <= 46) or (48 <= LA7_0 <= 58) or (63 <= LA7_0 <= 122) or LA7_0 == 124 or (126 <= LA7_0 <= 65535)):
-                    s = 3
-
-                elif (LA7_0 == 34):
-                    s = 4
-
-                elif (LA7_0 == 44):
-                    s = 5
-
-                elif (LA7_0 == 59):
-                    s = 6
-
-                elif (LA7_0 == 40):
-                    s = 7
-
-                elif (LA7_0 == 41):
-                    s = 8
-
-                elif (LA7_0 == 123):
-                    s = 9
-
-                elif (LA7_0 == 125):
-                    s = 10
-
-                elif (LA7_0 == 61):
-                    s = 11
-
-                if s >= 0:
-                    return s
-            elif s == 6: 
-                LA7_14 = input.LA(1)
-
-                s = -1
-                if ((9 <= LA7_14 <= 10) or LA7_14 == 13 or LA7_14 == 32 or LA7_14 == 34 or (40 <= LA7_14 <= 41) or LA7_14 == 44 or (59 <= LA7_14 <= 62) or LA7_14 == 123 or LA7_14 == 125):
-                    s = 15
-
-                elif ((0 <= LA7_14 <= 8) or (11 <= LA7_14 <= 12) or (14 <= LA7_14 <= 31) or LA7_14 == 33 or (35 <= LA7_14 <= 39) or (42 <= LA7_14 <= 43) or (45 <= LA7_14 <= 58) or (63 <= LA7_14 <= 122) or LA7_14 == 124 or (126 <= LA7_14 <= 65535)):
-                    s = 14
-
-                else:
-                    s = 3
 
                 if s >= 0:
                     return s

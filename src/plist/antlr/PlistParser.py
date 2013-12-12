@@ -1,4 +1,4 @@
-# $ANTLR 3.2 Sep 23, 2009 12:02:23 Plist.g 2013-12-12 17:09:05
+# $ANTLR 3.2 Sep 23, 2009 12:02:23 Plist.g 2013-12-12 18:02:36
 
 import sys
 from antlr3 import *
@@ -12,28 +12,28 @@ from collections import OrderedDict
 HIDDEN = BaseRecognizer.HIDDEN
 
 # token types
-BRACE_OPEN=14
-ESC_SEQ=8
-WS=6
-BRACE_CLOSE=15
+BRACE_OPEN=13
+WS=16
+ESC_SEQ=7
+BRACE_CLOSE=14
 WS_CHAR=5
-IDENTIFIER=7
-DICTIONARY_SEPERATOR=11
-ARRAY_SEPERATOR=10
+IDENTIFIER=6
+DICTIONARY_SEPERATOR=10
+ARRAY_SEPERATOR=9
 HEX_DIGIT=17
-ASSIGNMENT=16
+ASSIGNMENT=15
 COMMENT=4
 EOF=-1
-BRACKET_CLOSE=13
-STRING=9
-BRACKET_OPEN=12
+BRACKET_CLOSE=12
+STRING=8
+BRACKET_OPEN=11
 
 # token names
 tokenNames = [
     "<invalid>", "<EOR>", "<DOWN>", "<UP>", 
-    "COMMENT", "WS_CHAR", "WS", "IDENTIFIER", "ESC_SEQ", "STRING", "ARRAY_SEPERATOR", 
+    "COMMENT", "WS_CHAR", "IDENTIFIER", "ESC_SEQ", "STRING", "ARRAY_SEPERATOR", 
     "DICTIONARY_SEPERATOR", "BRACKET_OPEN", "BRACKET_CLOSE", "BRACE_OPEN", 
-    "BRACE_CLOSE", "ASSIGNMENT", "HEX_DIGIT"
+    "BRACE_CLOSE", "ASSIGNMENT", "WS", "HEX_DIGIT"
 ]
 
 
@@ -275,7 +275,7 @@ class PlistParser(Parser):
 
 
     # $ANTLR start "array"
-    # Plist.g:112:1: array returns [value] : BRACKET_OPEN (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )? BRACKET_CLOSE ;
+    # Plist.g:112:1: array returns [value] : BRACKET_OPEN (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )? ( ARRAY_SEPERATOR )? BRACKET_CLOSE ;
     def array(self, ):
 
         value = None
@@ -290,8 +290,8 @@ class PlistParser(Parser):
             
         try:
             try:
-                # Plist.g:116:5: ( BRACKET_OPEN (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )? BRACKET_CLOSE )
-                # Plist.g:116:8: BRACKET_OPEN (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )? BRACKET_CLOSE
+                # Plist.g:116:5: ( BRACKET_OPEN (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )? ( ARRAY_SEPERATOR )? BRACKET_CLOSE )
+                # Plist.g:116:8: BRACKET_OPEN (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )? ( ARRAY_SEPERATOR )? BRACKET_CLOSE
                 pass 
                 self.match(self.input, BRACKET_OPEN, self.FOLLOW_BRACKET_OPEN_in_array617)
                 # Plist.g:116:21: (lbl_first_value= value ( ARRAY_SEPERATOR lbl_value= value )* )?
@@ -316,7 +316,12 @@ class PlistParser(Parser):
                         LA3_0 = self.input.LA(1)
 
                         if (LA3_0 == ARRAY_SEPERATOR) :
-                            alt3 = 1
+                            LA3_1 = self.input.LA(2)
+
+                            if (LA3_1 == IDENTIFIER or LA3_1 == STRING or LA3_1 == BRACKET_OPEN or LA3_1 == BRACE_OPEN) :
+                                alt3 = 1
+
+
 
 
                         if alt3 == 1:
@@ -337,7 +342,20 @@ class PlistParser(Parser):
 
 
 
-                self.match(self.input, BRACKET_CLOSE, self.FOLLOW_BRACKET_CLOSE_in_array639)
+                # Plist.g:116:155: ( ARRAY_SEPERATOR )?
+                alt5 = 2
+                LA5_0 = self.input.LA(1)
+
+                if (LA5_0 == ARRAY_SEPERATOR) :
+                    alt5 = 1
+                if alt5 == 1:
+                    # Plist.g:116:156: ARRAY_SEPERATOR
+                    pass 
+                    self.match(self.input, ARRAY_SEPERATOR, self.FOLLOW_ARRAY_SEPERATOR_in_array640)
+
+
+
+                self.match(self.input, BRACKET_CLOSE, self.FOLLOW_BRACKET_CLOSE_in_array644)
 
 
 
@@ -368,31 +386,31 @@ class PlistParser(Parser):
                 # Plist.g:123:6: (lbl_key= identifier | lbl_key= string )
                 pass 
                 # Plist.g:123:6: (lbl_key= identifier | lbl_key= string )
-                alt5 = 2
-                LA5_0 = self.input.LA(1)
+                alt6 = 2
+                LA6_0 = self.input.LA(1)
 
-                if (LA5_0 == IDENTIFIER) :
-                    alt5 = 1
-                elif (LA5_0 == STRING) :
-                    alt5 = 2
+                if (LA6_0 == IDENTIFIER) :
+                    alt6 = 1
+                elif (LA6_0 == STRING) :
+                    alt6 = 2
                 else:
-                    nvae = NoViableAltException("", 5, 0, self.input)
+                    nvae = NoViableAltException("", 6, 0, self.input)
 
                     raise nvae
 
-                if alt5 == 1:
+                if alt6 == 1:
                     # Plist.g:123:7: lbl_key= identifier
                     pass 
-                    self._state.following.append(self.FOLLOW_identifier_in_dictionary_key668)
+                    self._state.following.append(self.FOLLOW_identifier_in_dictionary_key673)
                     lbl_key = self.identifier()
 
                     self._state.following.pop()
 
 
-                elif alt5 == 2:
+                elif alt6 == 2:
                     # Plist.g:123:28: lbl_key= string
                     pass 
-                    self._state.following.append(self.FOLLOW_string_in_dictionary_key674)
+                    self._state.following.append(self.FOLLOW_string_in_dictionary_key679)
                     lbl_key = self.string()
 
                     self._state.following.pop()
@@ -435,16 +453,16 @@ class PlistParser(Parser):
                 # Plist.g:130:5: (lbl_key= dictionary_key ASSIGNMENT lbl_value= value DICTIONARY_SEPERATOR )
                 # Plist.g:130:8: lbl_key= dictionary_key ASSIGNMENT lbl_value= value DICTIONARY_SEPERATOR
                 pass 
-                self._state.following.append(self.FOLLOW_dictionary_key_in_dictionary_entry705)
+                self._state.following.append(self.FOLLOW_dictionary_key_in_dictionary_entry710)
                 lbl_key = self.dictionary_key()
 
                 self._state.following.pop()
-                self.match(self.input, ASSIGNMENT, self.FOLLOW_ASSIGNMENT_in_dictionary_entry707)
-                self._state.following.append(self.FOLLOW_value_in_dictionary_entry711)
+                self.match(self.input, ASSIGNMENT, self.FOLLOW_ASSIGNMENT_in_dictionary_entry712)
+                self._state.following.append(self.FOLLOW_value_in_dictionary_entry716)
                 lbl_value = self.value()
 
                 self._state.following.pop()
-                self.match(self.input, DICTIONARY_SEPERATOR, self.FOLLOW_DICTIONARY_SEPERATOR_in_dictionary_entry713)
+                self.match(self.input, DICTIONARY_SEPERATOR, self.FOLLOW_DICTIONARY_SEPERATOR_in_dictionary_entry718)
 
 
 
@@ -482,20 +500,20 @@ class PlistParser(Parser):
                 # Plist.g:140:5: ( BRACE_OPEN (lbl_entry= dictionary_entry )* BRACE_CLOSE )
                 # Plist.g:140:8: BRACE_OPEN (lbl_entry= dictionary_entry )* BRACE_CLOSE
                 pass 
-                self.match(self.input, BRACE_OPEN, self.FOLLOW_BRACE_OPEN_in_dictionary753)
+                self.match(self.input, BRACE_OPEN, self.FOLLOW_BRACE_OPEN_in_dictionary758)
                 # Plist.g:140:19: (lbl_entry= dictionary_entry )*
-                while True: #loop6
-                    alt6 = 2
-                    LA6_0 = self.input.LA(1)
+                while True: #loop7
+                    alt7 = 2
+                    LA7_0 = self.input.LA(1)
 
-                    if (LA6_0 == IDENTIFIER or LA6_0 == STRING) :
-                        alt6 = 1
+                    if (LA7_0 == IDENTIFIER or LA7_0 == STRING) :
+                        alt7 = 1
 
 
-                    if alt6 == 1:
+                    if alt7 == 1:
                         # Plist.g:140:20: lbl_entry= dictionary_entry
                         pass 
-                        self._state.following.append(self.FOLLOW_dictionary_entry_in_dictionary758)
+                        self._state.following.append(self.FOLLOW_dictionary_entry_in_dictionary763)
                         lbl_entry = self.dictionary_entry()
 
                         self._state.following.pop()
@@ -505,8 +523,8 @@ class PlistParser(Parser):
 
 
                     else:
-                        break #loop6
-                self.match(self.input, BRACE_CLOSE, self.FOLLOW_BRACE_CLOSE_in_dictionary764)
+                        break #loop7
+                self.match(self.input, BRACE_CLOSE, self.FOLLOW_BRACE_CLOSE_in_dictionary769)
 
 
 
@@ -540,20 +558,21 @@ class PlistParser(Parser):
     FOLLOW_string_in_value526 = frozenset([1])
     FOLLOW_STRING_in_string555 = frozenset([1])
     FOLLOW_IDENTIFIER_in_identifier586 = frozenset([1])
-    FOLLOW_BRACKET_OPEN_in_array617 = frozenset([7, 9, 12, 13, 14])
-    FOLLOW_value_in_array622 = frozenset([10, 13])
-    FOLLOW_ARRAY_SEPERATOR_in_array627 = frozenset([7, 9, 12, 14])
-    FOLLOW_value_in_array631 = frozenset([10, 13])
-    FOLLOW_BRACKET_CLOSE_in_array639 = frozenset([1])
-    FOLLOW_identifier_in_dictionary_key668 = frozenset([1])
-    FOLLOW_string_in_dictionary_key674 = frozenset([1])
-    FOLLOW_dictionary_key_in_dictionary_entry705 = frozenset([16])
-    FOLLOW_ASSIGNMENT_in_dictionary_entry707 = frozenset([7, 9, 12, 14])
-    FOLLOW_value_in_dictionary_entry711 = frozenset([11])
-    FOLLOW_DICTIONARY_SEPERATOR_in_dictionary_entry713 = frozenset([1])
-    FOLLOW_BRACE_OPEN_in_dictionary753 = frozenset([7, 9, 12, 14, 15])
-    FOLLOW_dictionary_entry_in_dictionary758 = frozenset([7, 9, 12, 14, 15])
-    FOLLOW_BRACE_CLOSE_in_dictionary764 = frozenset([1])
+    FOLLOW_BRACKET_OPEN_in_array617 = frozenset([6, 8, 9, 11, 12, 13])
+    FOLLOW_value_in_array622 = frozenset([9, 12])
+    FOLLOW_ARRAY_SEPERATOR_in_array627 = frozenset([6, 8, 11, 13])
+    FOLLOW_value_in_array631 = frozenset([9, 12])
+    FOLLOW_ARRAY_SEPERATOR_in_array640 = frozenset([12])
+    FOLLOW_BRACKET_CLOSE_in_array644 = frozenset([1])
+    FOLLOW_identifier_in_dictionary_key673 = frozenset([1])
+    FOLLOW_string_in_dictionary_key679 = frozenset([1])
+    FOLLOW_dictionary_key_in_dictionary_entry710 = frozenset([15])
+    FOLLOW_ASSIGNMENT_in_dictionary_entry712 = frozenset([6, 8, 11, 13])
+    FOLLOW_value_in_dictionary_entry716 = frozenset([10])
+    FOLLOW_DICTIONARY_SEPERATOR_in_dictionary_entry718 = frozenset([1])
+    FOLLOW_BRACE_OPEN_in_dictionary758 = frozenset([6, 8, 11, 13, 14])
+    FOLLOW_dictionary_entry_in_dictionary763 = frozenset([6, 8, 11, 13, 14])
+    FOLLOW_BRACE_CLOSE_in_dictionary769 = frozenset([1])
 
 
 

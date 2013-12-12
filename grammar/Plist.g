@@ -113,7 +113,7 @@ array returns [value]
     @init {
     	$value = []
     }
-    :  BRACKET_OPEN (lbl_first_value=value {$value.append($lbl_first_value.value)} (ARRAY_SEPERATOR lbl_value=value {$value.append($lbl_value.value)})*)? BRACKET_CLOSE
+    :  BRACKET_OPEN (lbl_first_value=value {$value.append($lbl_first_value.value)} (ARRAY_SEPERATOR lbl_value=value {$value.append($lbl_value.value)})*)? (ARRAY_SEPERATOR)? BRACKET_CLOSE
     ;
 
 dictionary_key returns [value]
