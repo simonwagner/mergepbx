@@ -1,102 +1,22 @@
-from plist.parser import ParserGrammar, Parser, Rule, Terminal, NonTerminal, TokenStream
 import re
-from plist.lexer import LexerGrammar, Pattern, Lexer
-from plist.parser import ParserGrammar, Parser, Rule, Terminal, NonTerminal
-from plist.parser.tree import AbstractObjectTreeBuilder
 from collections import OrderedDict
+from .antlr import PlistLexer
+from .antlr import PlistParser
+import antlr3
 
-IDENTIFIER_RE = r"^([^;\s=\(\)\{\}\,\"\<\>]+)$"
-LEXER_GRAMMAR = LexerGrammar((
-    ("COMMENT_SINGLELINE", r"//.*?$"),
-    ("COMMENT", r"/\*.*?\*/"),
-    ("WHITESPACE", r"\s+"),
-    ("DICTIONARY_SEPERATOR", r";"),
-    ("ARRAY_SEPERATOR", r","),
-    ("ASSIGNMENT", r"="),
-    ("BRACKET_OPEN", r"\("),
-    ("BRACKET_CLOSE", r"\)"),
-    ("BRACE_OPEN", r"\{"),
-    ("BRACE_CLOSE", r"\}"),
-    ("STRING", r'\"((([^\\"]|(\\.)))*)\"'),
-    ("IDENTIFIER", r"([^;\s=\(\)\{\}\,\"\<\>]+)")
-))
-
-PARSER_GRAMMAR = ParserGrammar((
-    Rule("plist", NonTerminal("dictionary") | NonTerminal("array")),
-    Rule("value", NonTerminal("dictionary") | NonTerminal("array") | Terminal("IDENTIFIER") | Terminal("STRING")),
-    Rule("array", 
-        Terminal("BRACKET_OPEN") + \
-            (
-                NonTerminal("value") + (Terminal("ARRAY_SEPERATOR") + NonTerminal("value")).repeat().optional() + Terminal("ARRAY_SEPERATOR").optional()
-            ).optional() + \
-        Terminal("BRACKET_CLOSE")
-    ),
-    Rule("dictionary_entry", (Terminal("IDENTIFIER") | Terminal("STRING")) + Terminal("ASSIGNMENT") + NonTerminal("value") + Terminal("DICTIONARY_SEPERATOR")),
-    Rule("dictionary", 
-        Terminal("BRACE_OPEN") + \
-            (
-                NonTerminal("dictionary_entry").repeat()
-            ).optional() + \
-        Terminal("BRACE_CLOSE")
-    ),
-),
-ignore_tokens=["COMMENT", "COMMENT_SINGLELINE", "WHITESPACE"]
-)
-
-class NSPlistTreeBuilder(AbstractObjectTreeBuilder):
-    def build_plist(self, node):
-        assert(len(node.children) == 1)
-
-        first_child = next(iter(node.children))
-
-        return first_child.object
-
-    def build_dictionary(self, node):
-        entry_children = (child for child in node.children if child.value.name == "dictionary_entry")
-        return OrderedDict(child.object for child in entry_children)
-
-    def build_dictionary_entry(self, node):
-        first_child = next(iter(node.children))
-
-        key = first_child.object
-
-        for child in node.children:
-            if child.value.name == "value":
-                value = child.object
-
-        return (key, value)
-
-    def build_value(self, node):
-        first_child = next(iter(node.children))
-        return first_child.object
-
-    def build_array(self, node):
-        entry_children = (child.object for child in node.children if child.value.name == "value")
-
-        return list(entry_children)
-
-    def build_IDENTIFIER(self, node):
-        return node.value.match.group(1)
-
-    def build_STRING(self, node):
-        string = node.value.match.group(1)
-        string_value = string.decode("string_escape")
-        return string_value
 
 class NSPlistReader(object):
     def __init__(self, f):
         self.f = f
 
     def read(self):
-        plist_lexer = Lexer(LEXER_GRAMMAR)
-        plist_parser = Parser(PARSER_GRAMMAR, plist_lexer)
+        stream = antlr3.ANTLRInputStream(self.f)
+        lexer = PlistLexer(stream)
+        tokens = antlr3.CommonTokenStream(lexer)
+        parser = PlistParser(tokens)
+        plist = parser.plist()
 
-        tree = plist_parser.parse("plist", self.f.read(), tree_builder_class = NSPlistTreeBuilder)
-
-        if not tree:
-            raise Exception("can't parse plist")
-
-        return tree.root.object
+        return plist
 
     def close(self):
         self.f.close()

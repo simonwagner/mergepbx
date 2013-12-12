@@ -10,8 +10,6 @@ else:
 import plist.nextstep
 from plist.nextstep import NSPlistReader
 
-testLexerGrammar = plist.nextstep.LEXER_GRAMMAR
-testParserGrammar = plist.nextstep.PARSER_GRAMMAR
 
 class ParserTest(unittest.TestCase):
     def test_simple_dict(self):
