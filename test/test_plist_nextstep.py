@@ -1,5 +1,3 @@
-from plist.parser import ParserGrammar, Parser, Rule, Terminal, NonTerminal, TokenStream
-from plist.lexer import LexerGrammar, Pattern, Lexer
 import sys
 from StringIO import StringIO
 if sys.version_info >= (2,7):
@@ -10,8 +8,6 @@ else:
 import plist.nextstep
 from plist.nextstep import NSPlistReader
 
-testLexerGrammar = plist.nextstep.LEXER_GRAMMAR
-testParserGrammar = plist.nextstep.PARSER_GRAMMAR
 
 class ParserTest(unittest.TestCase):
     def test_simple_dict(self):
