@@ -1,8 +1,8 @@
 # $ANTLR 3.2 Sep 23, 2009 12:02:23 Plist.g 2013-12-12 18:02:36
 
 import sys
-from antlr3 import *
-from antlr3.compat import set, frozenset
+from .runtime.antlr3 import *
+from .runtime.antlr3.compat import set, frozenset
          
 from collections import OrderedDict
 

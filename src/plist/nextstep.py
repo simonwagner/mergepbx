@@ -2,7 +2,7 @@ import re
 from collections import OrderedDict
 from .antlr import PlistLexer
 from .antlr import PlistParser
-import antlr3
+import antlr.runtime.antlr3 as antlr3
 
 
 class NSPlistReader(object):
