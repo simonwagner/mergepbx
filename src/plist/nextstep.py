@@ -121,7 +121,8 @@ class NSPlistWriter(object):
     def walk_dictionary(self, f, items):
         f.write("{")
         for key, value in items:
-            f.write("\"%s\" = " % key.encode("string_escape"))
+            key_bytes = key.encode(self.codec)
+            f.write("\"%s\" = " % key_bytes.encode("string_escape"))
             self.walk_value(f, value)
             f.write("; ")
         f.write("}\n")
