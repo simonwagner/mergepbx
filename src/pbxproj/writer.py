@@ -284,4 +284,3 @@ class PBXProjectPlistWriter(PlistWriter):
 def write_pbx(project, output):
     w = PBXProjectPlistWriter(output)
     w.write_project(project)
-    w.close()
