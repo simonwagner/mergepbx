@@ -71,7 +71,7 @@ class PlistWriter(IndentWriter):
             else:
                 self.write_set(value)
         else:
-            self.write_string(unicode(value, self.codec))
+            self.write_string(value)
 
     def write_string(self, string):
         if PlistWriter.IDENTIFIER_RE.match(string):
