@@ -121,7 +121,7 @@ class PBXShellScriptBuildPhase(PBXISA, PBXISADictionaryBound):
         if hasattr(self, "name"):
             return self.name
         else:
-            return None
+            return "ShellScript"
 
 class PBXSourcesBuildPhase(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
