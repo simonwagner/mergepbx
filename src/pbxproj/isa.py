@@ -179,6 +179,13 @@ class XCConfigurationList(PBXISA, PBXISADictionaryBound):
                     targets.append(object)
         return targets
 
+class XCVersionGroup(PBXISA, PBXISADictionaryBound):
+    def __init__(self, *args, **kwargs):
+        super(XCVersionGroup, self).__init__(*args, **kwargs)
+
+    def get_name(self, project):
+        return self.name
+
 local_vars = dict(locals())
 ISA_MAPPING = dict(
     ((clazz.__name__, clazz) for varname, clazz in local_vars.iteritems() if isclass(clazz) and issubclass(clazz, PBXISA))

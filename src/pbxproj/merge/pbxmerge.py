@@ -332,6 +332,9 @@ class XCConfigurationListMerger3(_SimpleDictMerger3):
 class PBXVariantGroupMerger3(_SimpleDictMerger3):
     merge_children = create_auto_merge_set("children")
 
+class XCVersionGroupMerger3(_SimpleDictMerger3):
+    merge_files = create_auto_merge_set("children")
+
 Value3 = namedtuple("Value3", ("base", "mine", "theirs"))
 
 def _get_3(key, base, mine, theirs, optional = False, replace_value = None):
