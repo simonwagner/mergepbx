@@ -1,11 +1,13 @@
 from itertools import izip, izip_longest
 import re
 
-SPECIAL_CHARS = ("\\\"")
 def escape_string(s):
-    for character in SPECIAL_CHARS:
-        s = s.replace(character, "\\" + character)
-    return s
+    escaped_s = s.encode("string_escape")
+    #replace " with \", because string_escape does not do this
+    escaped_s = escaped_s.replace("\"", "\\\"")
+    #replace \' with ', because that is acceptable
+    escaped_s = escaped_s.replace("\\'", "'")
+    return escaped_s
 
 class IndentWriter(object):
     ONLY_SPACES_RE = re.compile(r"\A\s+\Z")
