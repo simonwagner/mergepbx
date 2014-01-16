@@ -43,7 +43,7 @@ class IndentWriter(object):
         self.f.close()
 
 class PlistWriter(IndentWriter):
-    IDENTIFIER_RE = re.compile(r"^([^;\s=\(\)\{\}\,\"\<\>\+\-@]+)$")
+    IDENTIFIER_RE = re.compile(r"^([^;\s=\(\)\{\}\,\"\<\>\+\-@\*]+)$")
 
     def __init__(self, f, codec="utf8"):
         super(PlistWriter, self).__init__(f, indent_char="\t", indent_size=1)
