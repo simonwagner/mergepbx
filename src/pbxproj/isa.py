@@ -160,7 +160,10 @@ class XCConfigurationList(PBXISA, PBXISADictionaryBound):
         target = targets[0]
 
         if isinstance(target, PBXProject):
-            target_name = target.get_project_name(project)
+            project_name = target.get_project_name(project)
+            #whitespaces apparently get removed by XCode
+            #so we need to remove them too.
+            target_name = str.join("", project_name.split())
         else:
             target_name = target.get_name(project)
 
