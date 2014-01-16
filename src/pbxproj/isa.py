@@ -184,7 +184,10 @@ class XCVersionGroup(PBXISA, PBXISADictionaryBound):
         super(XCVersionGroup, self).__init__(*args, **kwargs)
 
     def get_name(self, project):
-        return self.name
+        if hasattr(self, "name"):
+            return self.name
+        else:
+            return self.path
 
 local_vars = dict(locals())
 ISA_MAPPING = dict(
