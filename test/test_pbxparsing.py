@@ -12,7 +12,7 @@ else:
     import unittest2 as unittest
 
 import pbxproj
-from testhelpers import fixture_path, make_logger
+from testhelpers import fixture_path, make_logger, listpath
 from orderedset import OrderedSet
 from collections import OrderedDict
 import difflib
@@ -25,8 +25,7 @@ class PBXParsingTest(unittest.TestCase):
     def test_fixtures(self):
         parsing_fixtures_path = fixture_path("parse")
 
-        project_files = (file for file in os.listdir(parsing_fixtures_path) if file.endswith(".pbxproj"))
-        project_files = [os.path.join(parsing_fixtures_path, file) for file in project_files]
+        project_files = [file for file in listpath(parsing_fixtures_path) if file.endswith(".pbxproj")]
 
         self.logger.debug("parsing %d files..." % len(project_files))
 
