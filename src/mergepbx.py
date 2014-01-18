@@ -4,8 +4,7 @@ import sys
 import os
 
 from plist.nextstep import NSPlistReader
-from pbxproj.writer import write_pbx
-from pbxproj.reader import read_pbx
+import pbxproj
 from pbxproj.merge import merge_pbxs
 from pbxproj.merge.pbxmerge import MergeException
 
@@ -30,10 +29,10 @@ def merge_pbx_files(basef, minef, theirsf, mergedf):
     merged_project = merge_pbxs(base, mine, theirs)
 
     mergedf = open(mergedf, "w")
-    write_pbx(merged_project, mergedf)
+    pbxproj.write(mergedf, merged_project)
 
 def read_pbxs(pbx_files):
-    projects = [read_pbx(pbx_file) for pbx_file in pbx_files]
+    projects = [pbxproj.read(pbx_file) for pbx_file in pbx_files]
 
     return projects
 
