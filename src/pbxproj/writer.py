@@ -122,7 +122,3 @@ class PBXProjectPlistWriter(NSPlistWriter):
             return None
         else:
             return object.get_name(self.pbxproj)
-
-def write_pbx(project, output):
-    w = PBXProjectPlistWriter(output)
-    w.write_project(project)
