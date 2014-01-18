@@ -10,3 +10,6 @@ def fixture_path(path):
 def make_logger(clazz):
     logger_name = "test.%s.%s" % (clazz.__module__, clazz.__name__)
     return logging.getLogger(logger_name)
+
+def listpath(dir):
+    return [os.path.join(dir, entry) for entry in os.listdir(dir) if not entry.startswith(".")]
