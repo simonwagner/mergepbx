@@ -5,6 +5,8 @@ A tool for merging XCode project files in git
 Version: 0.3 - 18th January 2014
 Status: Alpha
 
+Follow us on twitter: https://twitter.com/mergepbx
+
 ## Why mergepbx? ##
 
 Tracking a XCode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automagically, if the merge algorithm would be aware of the structure of XCode's project file.
