@@ -10,7 +10,7 @@ from . import helpers
 helpers.setup_path()
 
 from plist.nextstep import NSPlistReader
-from pbxproj.writer import PBXProjectPlistWriter
+import pbxproj
 from pbxproj.pbxobjects import PBXProjFile
 from pbxproj.merge import get_project_file_merger
 
@@ -35,16 +35,12 @@ def merge_pbxs(base, mine, theirs):
 
     return merger.merge(base, mine, theirs)
 
-def write_pbx(project, output):
-    w = PBXProjectPlistWriter(output)
-    w.write_project(project)
-
 def merge_pbx_files(basef, minef, theirsf, mergedf):
     base, mine, theirs = read_pbxs((basef, minef, theirsf))
 
     merged_project = merge_pbxs(base, mine, theirs)
 
-    write_pbx(merged_project, open(mergedf, "w"))
+    pbxproj.write(mergedf, merged_project)
 
 def find_fixtures(path):
     dirlist = [os.path.join(path, entry) for entry in os.listdir(path)]
