@@ -2,7 +2,7 @@
 
 A tool for merging XCode project files in git
 
-Version: 0.2 - 12th December 2013
+Version: 0.3 - 18th January 2014
 Status: Alpha
 
 ## Why mergepbx? ##
