@@ -1,6 +1,7 @@
 import re
 from collections import OrderedDict
 import codecs
+from itertools import izip, izip_longest
 try:
     from cStringIO import StringIO
 except:
@@ -47,43 +48,163 @@ class NSPlistReader(object):
     def close(self):
         self.f.close()
 
-class NSPlistWriter(object):
-    def __init__(self, f, codec="UTF-8"):
+def escape_string(s):
+    escaped_s = s.encode("string_escape")
+    #replace " with \", because string_escape does not do this
+    escaped_s = escaped_s.replace("\"", "\\\"")
+    #replace \' with ', because that is acceptable
+    escaped_s = escaped_s.replace("\\'", "'")
+    return escaped_s
+
+class IndentWriter(object):
+    ONLY_SPACES_RE = re.compile(r"\A\s+\Z")
+    def __init__(self, f, indent_char="\t", indent_size=1):
         self.f = f
-        self.codec = codec
+        self.indent_char = indent_char
+        self.indent_size = indent_size
+        self.indent_count = 0
+        self.current_indent = ""
 
-    def write(self, data):
-        self.f.write("// !$*%s*$!\n" % self.codec)
-        self.walk_plist(self.f, data)
+    def indent(self):
+        self.indent_count += 1
+        self.current_indent = self.indent_char*(self.indent_count*self.indent_size)
 
-    def walk_plist(self, f, data):
-        if hasattr(data, "iteritems"):
-            self.walk_dictionary(f, data.iteritems())
-        elif hasattr(data, "__iter__"):
-            self.walk_array(f, data)
+    def deindent(self):
+        self.indent_count -= 1
+        self.current_indent = self.indent_char*(self.indent_count*self.indent_size)
+
+    def write(self, s):
+        lines = s.splitlines(True)
+        indendet_lines = (self.indent_line(line) for line in lines)
+        self.f.write(str.join("", indendet_lines))
+
+    def indent_line(self, line):
+        if False:
+            return line
+        elif line.endswith("\n"):
+            return line + self.current_indent
         else:
-            raise Exception("unknown data type, must be either a dictionary or an array")
+            return line
 
-    def walk_dictionary(self, f, items):
-        f.write("{")
-        for key, value in items:
-            key_bytes = key.encode(self.codec)
-            f.write("\"%s\" = " % key_bytes.encode("string_escape"))
-            self.walk_value(f, value)
-            f.write("; ")
-        f.write("}\n")
+    def close(self):
+        self.f.close()
 
-    def walk_array(self, f, items):
-        f.write("(")
-        for item in items:
-            self.walk_value(f, item)
-            f.write(", ")
-        f.write(")\n")
+class NSPlistWriter(IndentWriter):
+    IDENTIFIER_RE = re.compile(r"^([^;\s=\(\)\{\}\,\"\<\>\+\-@\*]+)$")
 
-    def walk_value(self, f, data):
-        if hasattr(data, "iteritems"):
-            self.walk_dictionary(f, data.iteritems())
-        elif hasattr(data, "__iter__"):
-            self.walk_array(f, data)
+    def __init__(self, f, codec="utf8"):
+        super(NSPlistWriter, self).__init__(f, indent_char="\t", indent_size=1)
+        self.codec = codec.upper()
+
+    def write_plist(self, plist):
+        self.write_header()
+        self.write_value(plist)
+
+    def write_header(self):
+        self.write(u"// !$*%s*$!\n" % self.codec)
+
+    def decide_multiline(self, value):
+        return True
+
+    def write_value(self, value):
+        if isinstance(value, dict):
+            multiline = self.decide_multiline(value)
+            if multiline:
+                self.write_dict_multiline(value)
+            else:
+                self.write_dict(value)
+        elif isinstance(value, tuple) or isinstance(value, set) or isinstance(value, list):
+            multiline = self.decide_multiline(value)
+            if multiline:
+                self.write_set_multiline(value)
+            else:
+                self.write_set(value)
         else:
-            f.write("\"%s\"" % str(data).encode("string_escape"))
+            self.write_string(value)
+
+    def write_string(self, string):
+        if NSPlistWriter.IDENTIFIER_RE.match(string):
+            self.write(string)
+        else:
+            self.write((u"\"%s\"" % escape_string(string)))
+
+    def write_dict_multiline(self, dict, comments = {}):
+        self.write(u"{")
+        self.indent()
+
+        for key, value in dict.iteritems():
+            self.write(u"\n")
+            if key in comments:
+                comment = comments[key]
+            else:
+                comment = None
+
+            self.write_dict_item(key, value, comment)
+
+        self.deindent()
+        self.write(u"\n}")
+
+    def write_dict(self, dict, comments = {}):
+        self.write(u"{")
+        self.indent()
+
+        for key, value in dict.iteritems():
+            if key in comments:
+                comment = comments[key]
+            else:
+                comment = None
+
+            self.write_dict_item(key, value, comment)
+            self.write(" ")
+
+        self.deindent()
+        self.write(u"}")
+
+    def write_dict_item(self, key, value, comment = None):
+        if isinstance(value, dict) or isinstance(value, tuple) or isinstance(value, set) or isinstance(value, list):
+            comment_before_value = True
+        else:
+            comment_before_value = False
+
+        self.write_dict_key(key, value, comment, comment_before_value)
+
+        self.write(u" = ")
+        self.write_value(value)
+        self.write(u";")
+
+        if not comment_before_value and comment != None:
+            self.write(u" /*" + comment + u"*/ ")
+
+    def write_dict_key(self, key, value, comment = None, comment_before_value = False):
+        self.write_string(key)
+        if comment_before_value and comment != None:
+            self.write(u" /*" + comment + "*/ ")
+
+    def write_set_multiline(self, values, comments = ()):
+        self.write(u"(")
+        self.indent()
+
+        for value, comment in izip_longest(values, comments, fillvalue=None):
+            self.write("\n")
+            self.write_set_item(value, comment)
+            self.write(u",")
+
+        self.deindent()
+        self.write(u"\n)")
+
+    def write_set(self, values, comments = ()):
+        self.write(u"(\n")
+        self.indent()
+
+        for value, comment in izip_longest(values, comments, fillvalue=None):
+            self.write_set_item(value, comment)
+            self.write(u",")
+
+        self.deindent()
+        self.write(u"\n)")
+
+    def write_set_item(self, value, comment = None):
+        self.write_value(value)
+        if comment != None:
+            self.write(u" ")
+            self.write_comment(comment)
