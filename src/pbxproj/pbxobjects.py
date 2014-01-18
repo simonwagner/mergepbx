@@ -1,3 +1,5 @@
+from itertools import chain
+
 from .core import DictionaryBoundObject
 from . import isa
 
@@ -19,9 +21,11 @@ class PBXProjFile(DictionaryBoundObject):
         )
 
         for (section, phase_isa) in phases:
-            phase_object = self._objects.getobject(phase_isa)
-            if not phase_object is None:
-                self._phases[section] = set(phase_object.files)
+            phase_objects_with_identifier = self._objects.getobjects(phase_isa)
+            phase_objects = (t[1] for t in phase_objects_with_identifier)
+            self._phases[section] = set(
+                chain.from_iterable(phase_object.files for phase_object in phase_objects)
+            )
 
     def get_objects(self):
         return self._objects
