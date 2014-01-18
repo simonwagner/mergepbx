@@ -6,8 +6,14 @@ from . import writer
 from . import pbxobjects
 from plist import NSPlistReader
 
-def read(fname):
-    f = open(fname)
+def read(fname_or_f):
+    #open file if fname_or_f is a string
+    #else use it as f
+    if isinstance(fname_or_f, str) or isinstance(fname_or_f, unicode):
+        f = open(fname_or_f)
+    else:
+        f = fname_or_f
+    #read project
     reader = NSPlistReader(f)
     return PBXProjFile(reader.read())
 
