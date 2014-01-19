@@ -741,7 +741,28 @@ class PlistLexer(Lexer):
     class DFA7(DFA):
         pass
 
-
+        SET1 = frozenset(chain(
+            range_inc(0,8),
+            range_inc(11,12),
+            range_inc(14,31),
+            range_inc(33,33),
+            range_inc(35,39),
+            range_inc(42,43),
+            range_inc(45, 58),
+            range_inc(63, 122),
+            range_inc(124,124),
+        ))
+        SET2 = frozenset(chain(
+            range_inc(9, 10),
+            range_inc(13,13),
+            range_inc(32, 32),
+            range_inc(34, 34),
+            range_inc(40, 41),
+            range_inc(44, 44),
+            range_inc(59, 62),
+            range_inc(123, 123),
+            range_inc(125, 125),
+        ))
         def specialStateTransition(self_, s, input):
             # convince pylint that my self_ magic is ok ;)
             # pylint: disable-msg=E0213
@@ -756,10 +777,10 @@ class PlistLexer(Lexer):
                 LA7_12 = input.LA(1)
 
                 s = -1
-                if ((0 <= LA7_12 <= 8) or (11 <= LA7_12 <= 12) or (14 <= LA7_12 <= 31) or LA7_12 == 33 or (35 <= LA7_12 <= 39) or (42 <= LA7_12 <= 43) or (45 <= LA7_12 <= 58) or (63 <= LA7_12 <= 122) or LA7_12 == 124 or (126 <= LA7_12 <= 65535)):
+                if LA7_12 in self_.SET1 or (126 <= LA7_12 <= 65535):
                     s = 14
 
-                elif ((9 <= LA7_12 <= 10) or LA7_12 == 13 or LA7_12 == 32 or LA7_12 == 34 or (40 <= LA7_12 <= 41) or LA7_12 == 44 or (59 <= LA7_12 <= 62) or LA7_12 == 123 or LA7_12 == 125):
+                elif LA7_12 in self_.SET2:
                     s = 15
 
                 else:
@@ -771,10 +792,10 @@ class PlistLexer(Lexer):
                 LA7_14 = input.LA(1)
 
                 s = -1
-                if ((9 <= LA7_14 <= 10) or LA7_14 == 13 or LA7_14 == 32 or LA7_14 == 34 or (40 <= LA7_14 <= 41) or LA7_14 == 44 or (59 <= LA7_14 <= 62) or LA7_14 == 123 or LA7_14 == 125):
+                if LA7_14 in self_.SET2:
                     s = 15
 
-                elif ((0 <= LA7_14 <= 8) or (11 <= LA7_14 <= 12) or (14 <= LA7_14 <= 31) or LA7_14 == 33 or (35 <= LA7_14 <= 39) or (42 <= LA7_14 <= 43) or (45 <= LA7_14 <= 58) or (63 <= LA7_14 <= 122) or LA7_14 == 124 or (126 <= LA7_14 <= 65535)):
+                elif LA7_14 in self_.SET1 or (126 <= LA7_14 <= 65535):
                     s = 14
 
                 else:
@@ -789,10 +810,10 @@ class PlistLexer(Lexer):
                 if (LA7_17 == 42):
                     s = 16
 
-                elif ((0 <= LA7_17 <= 8) or (11 <= LA7_17 <= 12) or (14 <= LA7_17 <= 31) or LA7_17 == 33 or (35 <= LA7_17 <= 39) or LA7_17 == 43 or (45 <= LA7_17 <= 58) or (63 <= LA7_17 <= 122) or LA7_17 == 124 or (126 <= LA7_17 <= 65535)):
+                elif LA7_17 in self_.SET1 or (126 <= LA7_17 <= 65535):
                     s = 17
 
-                elif ((9 <= LA7_17 <= 10) or LA7_17 == 13 or LA7_17 == 32 or LA7_17 == 34 or (40 <= LA7_17 <= 41) or LA7_17 == 44 or (59 <= LA7_17 <= 62) or LA7_17 == 123 or LA7_17 == 125):
+                elif LA7_17 in self_.SET2:
                     s = 15
 
                 else:
@@ -807,7 +828,7 @@ class PlistLexer(Lexer):
                 if (LA7_18 == 42):
                     s = 16
 
-                elif ((0 <= LA7_18 <= 8) or (11 <= LA7_18 <= 12) or (14 <= LA7_18 <= 31) or LA7_18 == 33 or (35 <= LA7_18 <= 39) or LA7_18 == 43 or (45 <= LA7_18 <= 58) or (63 <= LA7_18 <= 122) or LA7_18 == 124 or (126 <= LA7_18 <= 65535)):
+                elif LA7_18 in self_.SET1 or (126 <= LA7_18 <= 65535):
                     s = 17
 
                 else:
@@ -825,10 +846,10 @@ class PlistLexer(Lexer):
                 elif (LA7_16 == 42):
                     s = 16
 
-                elif ((0 <= LA7_16 <= 8) or (11 <= LA7_16 <= 12) or (14 <= LA7_16 <= 31) or LA7_16 == 33 or (35 <= LA7_16 <= 39) or LA7_16 == 43 or (45 <= LA7_16 <= 46) or (48 <= LA7_16 <= 58) or (63 <= LA7_16 <= 122) or LA7_16 == 124 or (126 <= LA7_16 <= 65535)):
+                elif LA7_16 in self_.SET1 or (126 <= LA7_16 <= 65535):
                     s = 17
 
-                elif ((9 <= LA7_16 <= 10) or LA7_16 == 13 or LA7_16 == 32 or LA7_16 == 34 or (40 <= LA7_16 <= 41) or LA7_16 == 44 or (59 <= LA7_16 <= 62) or LA7_16 == 123 or LA7_16 == 125):
+                elif LA7_16 in self_.SET2:
                     s = 15
 
                 else:
@@ -843,7 +864,7 @@ class PlistLexer(Lexer):
                 if (LA7_0 == 47):
                     s = 1
 
-                elif ((0 <= LA7_0 <= 8) or (11 <= LA7_0 <= 12) or (14 <= LA7_0 <= 31) or LA7_0 == 33 or (35 <= LA7_0 <= 39) or (42 <= LA7_0 <= 43) or (45 <= LA7_0 <= 46) or (48 <= LA7_0 <= 58) or (63 <= LA7_0 <= 122) or LA7_0 == 124 or (126 <= LA7_0 <= 65535)):
+                elif LA7_0 in self_.SET1 or (126 <= LA7_0 <= 65535):
                     s = 2
 
                 elif (LA7_0 == 34):
@@ -882,10 +903,10 @@ class PlistLexer(Lexer):
                 if (LA7_13 == 42):
                     s = 16
 
-                elif ((0 <= LA7_13 <= 8) or (11 <= LA7_13 <= 12) or (14 <= LA7_13 <= 31) or LA7_13 == 33 or (35 <= LA7_13 <= 39) or LA7_13 == 43 or (45 <= LA7_13 <= 58) or (63 <= LA7_13 <= 122) or LA7_13 == 124 or (126 <= LA7_13 <= 65535)):
+                elif LA7_13 in self_.SET1 or (126 <= LA7_13 <= 65535):
                     s = 17
 
-                elif ((9 <= LA7_13 <= 10) or LA7_13 == 13 or LA7_13 == 32 or LA7_13 == 34 or (40 <= LA7_13 <= 41) or LA7_13 == 44 or (59 <= LA7_13 <= 62) or LA7_13 == 123 or LA7_13 == 125):
+                elif LA7_13 in self_.SET2:
                     s = 15
 
                 else:
