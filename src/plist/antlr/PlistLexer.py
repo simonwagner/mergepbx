@@ -190,6 +190,18 @@ class PlistLexer(Lexer):
 
 
     # $ANTLR start "IDENTIFIER"
+    IDENTIFIER_SET = frozenset(chain(
+                        range_inc(0,8),
+                        range_inc(11,12),
+                        range_inc(14,31),
+                        range_inc(33,33),
+                        range_inc(35,39),
+                        range_inc(42,43),
+                        range_inc(45,58),
+                        range_inc(63,122),
+                        range_inc(124,124)
+                        ))
+
     def mIDENTIFIER(self, ):
 
         try:
@@ -205,14 +217,15 @@ class PlistLexer(Lexer):
                 alt5 = 2
                 LA5_0 = self.input.LA(1)
 
-                if ((0 <= LA5_0 <= 8) or (11 <= LA5_0 <= 12) or (14 <= LA5_0 <= 31) or LA5_0 == 33 or (35 <= LA5_0 <= 39) or (42 <= LA5_0 <= 43) or (45 <= LA5_0 <= 58) or (63 <= LA5_0 <= 122) or LA5_0 == 124 or (126 <= LA5_0 <= 65535)) :
+                if LA5_0 in self.IDENTIFIER_SET or (126 <= LA5_0 <= 65535):
                     alt5 = 1
 
 
                 if alt5 == 1:
                     # Plist.g:33:8: ~ ( ';' | WS_CHAR | '=' | '(' | ')' | '{' | '}' | ',' | '\"' | '<' | '>' )
-                    pass 
-                    if (0 <= self.input.LA(1) <= 8) or (11 <= self.input.LA(1) <= 12) or (14 <= self.input.LA(1) <= 31) or self.input.LA(1) == 33 or (35 <= self.input.LA(1) <= 39) or (42 <= self.input.LA(1) <= 43) or (45 <= self.input.LA(1) <= 58) or (63 <= self.input.LA(1) <= 122) or self.input.LA(1) == 124 or (126 <= self.input.LA(1) <= 65535):
+                    pass
+                    la = self.input.LA(1)
+                    if la in self.IDENTIFIER_SET or (126 <= la <= 65535):
                         self.input.consume()
                     else:
                         mse = MismatchedSetException(None, self.input)
