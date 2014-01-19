@@ -1,6 +1,7 @@
 # $ANTLR 3.2 Sep 23, 2009 12:02:23 Plist.g 2013-12-12 18:02:36
 
 import sys
+from itertools import chain
 from .runtime.antlr3 import *
 from .runtime.antlr3.compat import set, frozenset
 
@@ -24,6 +25,15 @@ EOF=-1
 BRACKET_CLOSE=12
 STRING=8
 BRACKET_OPEN=11
+
+"""
+yield all numbers from start to stop, including start and stop
+"""
+def range_inc(start, stop):
+    current = start
+    while current <= stop:
+        yield current
+        current += 1
 
 
 class PlistLexer(Lexer):
