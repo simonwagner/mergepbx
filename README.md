@@ -91,7 +91,3 @@ Be careful, you have been warned!
 ## Contributers ##
 
 * Simon Wagner
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/simonwagner/mergepbx/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
