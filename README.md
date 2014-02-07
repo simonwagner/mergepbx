@@ -34,7 +34,7 @@ To use this script, you have to configure it as a merge driver for you project f
 Execute the following command in the directory of the cloned project:
 
 ```
-./build.py mergepbx MANIFEST
+./build.py
 ```
 
 That should build the mergepbx executable that you can use. It is a specially crafted zip file that contains all needed python files and can directly be executed on the commandline
