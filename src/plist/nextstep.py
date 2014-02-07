@@ -13,7 +13,7 @@ import antlr.runtime.antlr3 as antlr3
 
 
 class NSPlistReader(object):
-    CODEC_DEF_RE = re.compile(r"^//\s*!\$\*(.+)\$\*!$") #e.g. "// !$*UTF8*$!"
+    CODEC_DEF_RE = re.compile(r"^//\s*!\$\*(.+)\*\$!$") #e.g. "// !$*UTF8*$!"
     def __init__(self, f):
         self.f = f
 
