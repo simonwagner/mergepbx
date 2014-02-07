@@ -21,7 +21,8 @@ class NSPlistReader(object):
         content = self.f.read()
 
         self._encoding = self._detect_encoding(content)
-        stream = antlr3.ANTLRInputStream(StringIO(content), encoding=self._encoding)
+        unicode_content = unicode(content, encoding=self._encoding)
+        stream = antlr3.ANTLRStringStream(unicode_content)
         lexer = PlistLexer(stream)
         tokens = antlr3.CommonTokenStream(lexer)
         parser = PlistParser(tokens)
