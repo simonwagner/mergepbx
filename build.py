@@ -9,6 +9,7 @@
 import zipfile
 import tempfile
 from ConfigParser import SafeConfigParser
+from ConfigParser import NoOptionError
 from collections import namedtuple
 import os
 import stat
@@ -38,12 +39,16 @@ END_OF_PYTHON_CODE
 
 class Manifest(object):
     ModuleFile = namedtuple("ModuleFile", ("file_path", "egg_path"))
-    def __init__(self, mainmodule, files):
+    def __init__(self, mainmodule, files, default_target=None):
         self.mainmodule = mainmodule
         self.files = files
+        self._default_target = default_target
 
     def iterfiles(self):
         return iter(self.files)
+
+    def default_target(self):
+        return self._default_target
 
     @staticmethod
     def read(fpath):
@@ -53,6 +58,10 @@ class Manifest(object):
         mainmodule = config.get("build", "mainmodule")
         mainmodule_path = config.get("build", "mainmodule_path")
         modules = config.get("build", "modules").split(",")
+        try:
+            default_target = config.get("build", "default_target")
+        except NoOptionError:
+            default_target = None
 
         print modules
         #add modules
@@ -64,7 +73,7 @@ class Manifest(object):
         #add main module
         files += [Manifest.ModuleFile(mainmodule_path, mainmodule + ".py")]
 
-        return Manifest(mainmodule, files)
+        return Manifest(mainmodule, files, default_target)
 
     @staticmethod
     def _get_module_files(module, path):
@@ -89,16 +98,25 @@ class Manifest(object):
         return egg_path
 
 def main():
-    if len(sys.argv) < 3:
-        sys.stderr.write("usage: build.py target manifest\n")
-        sys.exit(os.EX_USAGE)
+    #default settings
+    target_file = None
+    manifest_file = "MANIFEST"
 
-    target_file, manifest_file = sys.argv[1:3]
-    build(target_file, manifest_file)
+    if len(sys.argv) >= 2:
+        target_file = sys.argv[1]
+    if len(sys.argv) >= 3:
+        manifest_file = sys.argv[2]
 
-def build(target_file, manifest_file):
     manifest = Manifest.read(manifest_file)
+    if not target_file:
+        target_file = manifest.default_target()
+        if not target_file:
+            sys.stderr.write("please specify a target by using: ./build.py target\n")
+            sys.exit(os.EX_USAGE)
 
+    build(target_file, manifest)
+
+def build(target_file, manifest):
     pack_egg(target_file, manifest)
 
 def pack_egg(target_file, manifest):
