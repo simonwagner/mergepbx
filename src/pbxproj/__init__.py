@@ -1,3 +1,5 @@
+import codecs
+
 from .pbxobjects import PBXProjFile
 from . import core
 from . import isa
@@ -23,7 +25,7 @@ def write(fname_or_f, data, encoding=None):
     #open file if fname_or_f is a string
     #else use it as f
     if isinstance(fname_or_f, str) or isinstance(fname_or_f, unicode):
-        f = open(fname, "w", encoding=encoding)
+        f = codecs.open(fname_or_f, "w", encoding=encoding)
     else:
         f = fname_or_f
     #write project
