@@ -2,6 +2,7 @@
 import sys
 import os
 import logging
+from argparse import ArgumentParser
 if sys.version_info >= (2,7):
     import unittest
 else:
@@ -15,6 +16,18 @@ helpers.setup_path()
 class OnlyTestLogsFilter(logging.Filter):
     def filter(self, record):
         return record.name.startswith("test.")
+
+def get_argument_parser():
+    parser = ArgumentParser()
+
+    parser.add_argument("--logging",
+                        help="show all log messages",
+                        action="store_true")
+    parser.add_argument("--test-logging",
+                        help="show only log messages from test cases",
+                        action="store_true")
+
+    return parser
 
 def setup_logging():
     logger = logging.getLogger()
@@ -31,9 +44,12 @@ def setup_logging():
 
 if __name__ == '__main__':
     log_handler = None
-    if "--logging" in sys.argv:
+
+    parser = get_argument_parser()
+    args = parser.parse_args()
+    if args.logging:
         setup_logging()
-    if "--test-logging" in sys.argv and log_handler == None:
+    if args.test_logging and log_handler == None:
         handler = setup_logging()
         handler.addFilter(OnlyTestLogsFilter())
 
