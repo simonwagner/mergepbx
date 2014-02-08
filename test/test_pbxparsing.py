@@ -12,7 +12,7 @@ else:
     import unittest2 as unittest
 
 import pbxproj
-from testhelpers import fixture_path, make_logger, listpath
+from testhelpers import fixture_path, make_logger, listpath, wrap_with_codec
 from orderedset import OrderedSet
 from collections import OrderedDict
 import difflib
@@ -33,7 +33,7 @@ class PBXParsingTest(unittest.TestCase):
             self.logger.debug("trying to parse file %s" % project_file)
 
             data = pbxproj.read(project_file)
-            f_o = StringIO()
+            f_o = wrap_with_codec(StringIO(), data.get_encoding())
             pbxproj.write(f_o, data)
 
             #now compare the content of the written file with the original file
