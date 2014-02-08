@@ -91,7 +91,7 @@ class IndentWriter(object):
         self.f.close()
 
 class NSPlistWriter(IndentWriter):
-    IDENTIFIER_RE = re.compile(r"^([^;\s=\(\)\{\}\,\"\<\>\+\-@\*]+)$")
+    IDENTIFIER_RE = re.compile(r"^([A-Za-z0-9'_\.\$/]+)$")
 
     def __init__(self, f, codec="utf8"):
         super(NSPlistWriter, self).__init__(f, indent_char="\t", indent_size=1)
