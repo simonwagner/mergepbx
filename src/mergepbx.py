@@ -72,7 +72,6 @@ def merge_pbx_files(basef, minef, theirsf, mergedf):
 
     merged_project = merge_pbxs(base, mine, theirs)
 
-    mergedf = open(mergedf, "w")
     pbxproj.write(mergedf, merged_project)
 
 def read_pbxs(pbx_files):
