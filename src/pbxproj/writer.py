@@ -87,7 +87,7 @@ class PBXProjectPlistWriter(NSPlistWriter):
         return self.multiline
 
     def write_dict_item(self, key, value, comment = None):
-        if key == "remoteGlobalIDString":
+        if key in ("remoteGlobalIDString", "TargetAttributes"):
             old = self.auto_comment
             self.auto_comment = False
             super(PBXProjectPlistWriter, self).write_dict_item(key, value, comment)
