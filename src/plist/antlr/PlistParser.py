@@ -7,6 +7,7 @@ from .runtime.antlr3.compat import set, frozenset
 from collections import OrderedDict
 
 
+from ..escape import unescape_string
 
 # for convenience in actions
 HIDDEN = BaseRecognizer.HIDDEN
@@ -224,9 +225,9 @@ class PlistParser(Parser):
 
 
                 #action start
-                            
-                value = lbl_string.text[1:-1].decode("string_escape")
-                    
+
+                value = unescape_string(lbl_string.text[1:-1])
+
                 #action end
 
                         

@@ -7,6 +7,8 @@ options
 
 @header {
 from collections import OrderedDict
+
+from ..escape import unescape_string
 }
 
 @rulecatch {
@@ -98,7 +100,7 @@ value returns [value]
 
 string returns [value]
     @after {
-        $value = $lbl_string.text[1:-1].decode("string_escape")
+        $value = unescape_string($lbl_string.text[1:-1])
     }
     :   lbl_string=STRING;
     
