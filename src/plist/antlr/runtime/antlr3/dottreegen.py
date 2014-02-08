@@ -38,7 +38,7 @@ This module contains all support classes for AST construction and tree parsers.
 # lot's of docstrings are missing, don't complain for now...
 # pylint: disable-msg=C0111
 
-from antlr3.tree import CommonTreeAdaptor
+from .tree import CommonTreeAdaptor
 import stringtemplate3
 
 class DOTTreeGenerator(object):

@@ -41,7 +41,7 @@ This module contains all support classes for AST construction and tree parsers.
 from treewizard import TreeWizard
 
 try:
-    from antlr3.dottreegen import toDOT
+    from .dottreegen import toDOT
 except ImportError, exc:
     def toDOT(*args, **kwargs):
         raise exc

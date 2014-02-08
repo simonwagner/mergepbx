@@ -40,11 +40,11 @@ This module contains all support classes for AST construction and tree parsers.
 
 import re
 
-from antlr3.constants import UP, DOWN, EOF, INVALID_TOKEN_TYPE
-from antlr3.recognizers import BaseRecognizer, RuleReturnScope
-from antlr3.streams import IntStream
-from antlr3.tokens import CommonToken, Token, INVALID_TOKEN
-from antlr3.exceptions import MismatchedTreeNodeException, \
+from .constants import UP, DOWN, EOF, INVALID_TOKEN_TYPE
+from .recognizers import BaseRecognizer, RuleReturnScope
+from .streams import IntStream
+from .tokens import CommonToken, Token, INVALID_TOKEN
+from .exceptions import MismatchedTreeNodeException, \
      MissingTokenException, UnwantedTokenException, MismatchedTokenException, \
      NoViableAltException
 
