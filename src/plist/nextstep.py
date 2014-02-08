@@ -43,7 +43,7 @@ class NSPlistReader(object):
         else:
             return None
 
-    def get_encoding():
+    def get_encoding(self):
         return self._encoding
 
     def close(self):
