@@ -2,22 +2,32 @@
 
 import sys
 import os
+from argparse import ArgumentParser
 
 from plist.nextstep import NSPlistReader
 import pbxproj
 from pbxproj.merge import merge_pbxs
 from pbxproj.merge.pbxmerge import MergeException
 
+def get_argument_parser():
+    parser = ArgumentParser()
+
+    parser.add_argument("base",
+                        help="base version - the last common version of mine and theirs")
+    parser.add_argument("mine",
+                        help="my version")
+    parser.add_argument("theirs",
+                        help="their version")
+
+    return parser
+
 def main():
     log = sys.stderr
-    if len(sys.argv) < 4:
-        log.write("usage: mergepbx base mine theirs\n")
-        sys.exit(os.EX_USAGE)
-
-    base_path, mine_path, theirs_path = sys.argv[1:4]
+    parser = get_argument_parser()
+    args = parser.parse_args()
 
     try:
-        merge_pbx_files(base_path, mine_path, theirs_path, mine_path)
+        merge_pbx_files(args.base, args.mine, args.theirs, args.mine)
         sys.exit(0)
     except Exception as e:
         log.write("merging failed: %s\n" % str(e))
