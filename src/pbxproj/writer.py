@@ -4,6 +4,10 @@ from plist import NSPlistWriter
 
 class PBXProjectPlistWriter(NSPlistWriter):
     OBJECTID_RE = re.compile(r"^[0-9A-F]{24}")
+    COMMENT_BLACKLIST = frozenset((
+        "remoteGlobalIDString",
+        "TargetAttributes",
+    ))
 
     def __init__(self, f):
         super(PBXProjectPlistWriter, self).__init__(f)
@@ -87,7 +91,7 @@ class PBXProjectPlistWriter(NSPlistWriter):
         return self.multiline
 
     def write_dict_item(self, key, value, comment = None):
-        if key in ("remoteGlobalIDString", "TargetAttributes"):
+        if key in self.COMMENT_BLACKLIST:
             old = self.auto_comment
             self.auto_comment = False
             super(PBXProjectPlistWriter, self).write_dict_item(key, value, comment)
