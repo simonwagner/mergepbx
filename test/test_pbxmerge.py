@@ -16,7 +16,7 @@ import pbxproj.merge.pbxmerge as pbxmerge
 from pbxproj.merge import merge_pbxs
 import pbxproj.isa as isa
 
-from testhelpers import fixture_path, make_logger, listpath
+from testhelpers import fixture_path, make_logger, listpath, wrap_with_codec
 
 def first(iterable, predicate, default=None):
     for item in iterable:
@@ -63,6 +63,7 @@ class PBXMergeTest(unittest.TestCase):
             base, mine, theirs, merged = projects
 
             merged_buffer = StringIO()
+            merged_buffer = wrap_with_codec(merged_buffer, codec=base.get_encoding())
             merged_project = merge_pbxs(base, mine, theirs)
             pbxproj.write(merged_buffer, merged_project)
 
