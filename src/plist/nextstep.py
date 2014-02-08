@@ -11,6 +11,8 @@ from .antlr import PlistLexer
 from .antlr import PlistParser
 import antlr.runtime.antlr3 as antlr3
 
+from .escape import escape_string
+
 
 class NSPlistReader(object):
     CODEC_DEF_RE = re.compile(r"^//\s*!\$\*(.+)\*\$!$") #e.g. "// !$*UTF8*$!"
@@ -48,14 +50,6 @@ class NSPlistReader(object):
 
     def close(self):
         self.f.close()
-
-def escape_string(s):
-    escaped_s = s.encode("string_escape")
-    #replace " with \", because string_escape does not do this
-    escaped_s = escaped_s.replace("\"", "\\\"")
-    #replace \' with ', because that is acceptable
-    escaped_s = escaped_s.replace("\\'", "'")
-    return escaped_s
 
 class IndentWriter(object):
     ONLY_SPACES_RE = re.compile(r"\A\s+\Z")
