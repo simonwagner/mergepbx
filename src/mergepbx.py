@@ -18,6 +18,9 @@ def get_argument_parser():
                         help="my version")
     parser.add_argument("theirs",
                         help="their version")
+    parser.add_argument("-o", "--output",
+                        help="output path for the merged file",
+                        default=None)
 
     return parser
 
@@ -26,8 +29,13 @@ def main():
     parser = get_argument_parser()
     args = parser.parse_args()
 
+    if args.output:
+        output = args.output
+    else:
+        output = args.mine
+
     try:
-        merge_pbx_files(args.base, args.mine, args.theirs, args.mine)
+        merge_pbx_files(args.base, args.mine, args.theirs, output)
         sys.exit(0)
     except Exception as e:
         log.write("merging failed: %s\n" % str(e))
