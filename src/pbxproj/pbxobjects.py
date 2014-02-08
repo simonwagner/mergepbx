@@ -5,12 +5,13 @@ from . import isa
 
 class PBXProjFile(DictionaryBoundObject):
     MAPPED_ATTRIBUTES = ("archiveVersion", "objectVersion", "rootObject")
-    def __init__(self, plist, ignore_unknown_objects=False):
+    def __init__(self, plist, ignore_unknown_objects=False, encoding=None):
         super(self.__class__, self).__init__(plist, self.__class__.MAPPED_ATTRIBUTES)
         self._plist = plist
         self._classes = PBXClasses(self._plist["classes"])
         self._objects = PBXObjects(self._plist["objects"], ignore_unknown_objects)
         self._load_phases()
+        self._encoding = encoding
 
     def _load_phases(self):
         self._phases = dict()
@@ -34,6 +35,9 @@ class PBXProjFile(DictionaryBoundObject):
         for phase, files in self._phases.iteritems():
             if identifier in files:
                 return phase
+
+    def get_encoding(self):
+        return self._encoding
 
 class PBXClasses(object):
     def __init__(self, data_dict):
