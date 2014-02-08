@@ -132,6 +132,11 @@ class PBXProjectFileMerger3(Merger):
     def merge(self, base, mine, theirs):
         result = OrderedDict()
 
+        #check if the encoding for all project is
+        #the same, otherwise abort
+        if base.get_encoding() != theirs.get_encoding() or base.get_encoding() != mine.get_encoding():
+            raise ValueError("merging projects with different encoding is not supported.")
+        encoding = mine.get_encoding()
         #use plist for merging
         base, mine, theirs = (base._plist, mine._plist, theirs._plist)
 
@@ -141,7 +146,7 @@ class PBXProjectFileMerger3(Merger):
         self.merge_objects(result, base, mine, theirs)
         self.merge_rootObject(result, base, mine, theirs)
 
-        return PBXProjFile(result)
+        return PBXProjFile(result, encoding=encoding)
 
     def merge_archiveVersion(self, result, base, mine, theirs):
         archiveVersion = _get_3("archiveVersion", base, mine, theirs)
