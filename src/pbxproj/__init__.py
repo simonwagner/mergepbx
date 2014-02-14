@@ -6,6 +6,8 @@ from . import isa
 from . import reader
 from . import writer
 from . import pbxobjects
+from . import merge
+
 from plist import NSPlistReader
 
 def read(fname_or_f):
