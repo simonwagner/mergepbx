@@ -677,14 +677,9 @@ class CommonTokenStream(TokenStream):
                 discard = True
 
             # is there a channel override for token type?
-            try:
+            if t.type in self.channelOverrideMap:
                 overrideChannel = self.channelOverrideMap[t.type]
-                
-            except KeyError:
-                # no override for this type
-                pass
-            
-            else:
+
                 if overrideChannel == self.channel:
                     t.channel = overrideChannel
                 else:
