@@ -43,7 +43,7 @@ class NSPlistReader(object):
             codec_name = codec_def_match.group(1)
             return codec_name
         else:
-            return None
+            return "ascii"
 
     def get_encoding(self):
         return self._encoding
