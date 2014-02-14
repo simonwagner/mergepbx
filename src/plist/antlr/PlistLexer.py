@@ -111,8 +111,9 @@ class PlistLexer(Lexer):
 
                     if alt1 == 1:
                         # Plist.g:28:14: ~ ( '\\n' | '\\r' )
-                        pass 
-                        if (0 <= self.input.LA(1) <= 9) or (11 <= self.input.LA(1) <= 12) or (14 <= self.input.LA(1) <= 65535):
+                        pass
+                        LA1_2 = self.input.LA(1)
+                        if (0 <= LA1_2 <= 9) or (11 <= LA1_2 <= 12) or (14 <= LA1_2 <= 65535):
                             self.input.consume()
                         else:
                             mse = MismatchedSetException(None, self.input)
@@ -286,8 +287,9 @@ class PlistLexer(Lexer):
 
                 elif alt6 == 2:
                     # Plist.g:37:24: ~ ( '\\\\' | '\"' )
-                    pass 
-                    if (0 <= self.input.LA(1) <= 33) or (35 <= self.input.LA(1) <= 91) or (93 <= self.input.LA(1) <= 65535):
+                    pass
+                    LA6_1 = self.input.LA(1)
+                    if (0 <= LA6_1 <= 33) or (35 <= LA6_1 <= 91) or (93 <= LA6_1 <= 65535):
                         self.input.consume()
                     else:
                         mse = MismatchedSetException(None, self.input)
@@ -528,8 +530,9 @@ class PlistLexer(Lexer):
         try:
             # Plist.g:72:11: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
             # Plist.g:72:13: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
-            pass 
-            if (48 <= self.input.LA(1) <= 57) or (65 <= self.input.LA(1) <= 70) or (97 <= self.input.LA(1) <= 102):
+            pass
+            LA0 = self.input.LA(1)
+            if (48 <= LA0 <= 57) or (65 <= LA0 <= 70) or (97 <= LA0 <= 102):
                 self.input.consume()
             else:
                 mse = MismatchedSetException(None, self.input)
@@ -556,7 +559,8 @@ class PlistLexer(Lexer):
             # Plist.g:76:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
             pass 
             self.match(92)
-            if self.input.LA(1) == 34 or self.input.LA(1) == 39 or self.input.LA(1) == 92 or self.input.LA(1) == 98 or self.input.LA(1) == 102 or self.input.LA(1) == 110 or self.input.LA(1) == 114 or self.input.LA(1) == 116:
+            LA0 = self.input.LA(1)
+            if LA0 == 34 or LA0 == 39 or LA0 == 92 or LA0 == 98 or LA0 == 102 or LA0 == 110 or LA0 == 114 or LA0 == 116:
                 self.input.consume()
             else:
                 mse = MismatchedSetException(None, self.input)
@@ -581,8 +585,9 @@ class PlistLexer(Lexer):
         try:
             # Plist.g:80:5: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
             # Plist.g:80:9: ( ' ' | '\\t' | '\\r' | '\\n' )
-            pass 
-            if (9 <= self.input.LA(1) <= 10) or self.input.LA(1) == 13 or self.input.LA(1) == 32:
+            pass
+            LA0 = self.input.LA(1)
+            if (9 <= LA0 <= 10) or LA0 == 13 or LA0 == 32:
                 self.input.consume()
             else:
                 mse = MismatchedSetException(None, self.input)
