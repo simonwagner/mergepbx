@@ -26,6 +26,10 @@ def get_argument_parser():
     parser.add_argument("-p", "--profile",
                         help="store profile under this file path",
                         default=None)
+    parser.add_argument("-r", "--runs",
+                        type=int,
+                        help="how often should we parse the file",
+                        default=1)
 
     return parser
 
@@ -34,7 +38,7 @@ def main():
     args = parser.parse_args()
 
 
-    profile.runctx("merge_pbx_files(args.base, args.mine, args.theirs)", globals(), locals(), args.profile)
+    profile.runctx("for i in range(args.runs): merge_pbx_files(args.base, args.mine, args.theirs)", globals(), locals(), args.profile)
 
 def merge_pbx_files(basef, minef, theirsf):
     base, mine, theirs = (pbxproj.read(f) for f in (basef, minef, theirsf))
