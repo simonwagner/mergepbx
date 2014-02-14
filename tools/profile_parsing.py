@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+from argparse import ArgumentParser
 try:
     import cProfile as profile
 except:
@@ -12,18 +13,27 @@ helpers.setup_path()
 
 import pbxproj
 
+def get_argument_parser():
+    parser = ArgumentParser()
+
+    parser.add_argument("file",
+                        help="file to be parsed during the profiling")
+    parser.add_argument("-p", "--profile",
+                        help="store profile under this file path",
+                        default=None)
+
+    return parser
+
 def main():
-    if len(sys.argv) < 2:
-        print "usage: %s file [profile]" % sys.argv[0]
-        return
+    parser = get_argument_parser()
+    args = parser.parse_args()
 
-    if len(sys.argv) >= 3:
-        profile_out = sys.argv[2]
-    else:
-        profile_out = None
-
-
-    profile.run("pbxproj.read(sys.argv[1])", profile_out)
+    profile.runctx("pbxproj.read(file)",
+        globals={},
+        locals=dict(
+            pbxproj=pbxproj, file=args.file
+        ),
+        filename=args.profile)
 
 
 

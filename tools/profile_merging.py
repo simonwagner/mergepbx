@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+from argparse import ArgumentParser
 try:
     import cProfile as profile
 except:
@@ -13,19 +14,27 @@ helpers.setup_path()
 import pbxproj
 from pbxproj.merge import merge_pbxs
 
+def get_argument_parser():
+    parser = ArgumentParser()
+
+    parser.add_argument("base",
+                        help="base for merging")
+    parser.add_argument("mine",
+                        help="mine for merging")
+    parser.add_argument("theirs",
+                        help="theirs for merging")
+    parser.add_argument("-p", "--profile",
+                        help="store profile under this file path",
+                        default=None)
+
+    return parser
+
 def main():
-    if len(sys.argv) < 4:
-        print "usage: %s base mine theirs [profile]" % sys.argv[0]
-        return
-
-    base, mine, theirs = sys.argv[1:-1]
-    if len(sys.argv) >= 5:
-        profile_out = sys.argv[-1]
-    else:
-        profile_out = None
+    parser = get_argument_parser()
+    args = parser.parse_args()
 
 
-    profile.runctx("merge_pbx_files(base, mine, theirs)", globals(), locals(), profile_out)
+    profile.runctx("merge_pbx_files(args.base, args.mine, args.theirs)", globals(), locals(), args.profile)
 
 def merge_pbx_files(basef, minef, theirsf):
     base, mine, theirs = (pbxproj.read(f) for f in (basef, minef, theirsf))
