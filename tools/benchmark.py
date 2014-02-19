@@ -7,6 +7,9 @@ import shutil
 import time
 import sys
 import gc
+import numpy as np
+import scipy
+from scipy.stats import t
 try:
     import cProfile as profile
 except:
@@ -83,7 +86,7 @@ def main():
         sys.stdout.write("...")
         sys.stdout.flush()
         result = run_benchmark(pbxproj, BENCHMARK_FILES, timer_impl=ClockTimer)
-        sys.stdout.write(" %gs\n" % result.avg())
+        sys.stdout.write(" [%gs, %gs]\n" % result.confidence_interval())
 
     reloader.disable()
 
@@ -124,6 +127,13 @@ class BenchmarkResult(object):
 
     def avg(self):
         return sum(self.results)/len(self.results)
+
+    def confidence_interval(self, confidence=0.95):
+        a = 1.0*np.array(self.results)
+        n = len(a)
+        m, se = np.mean(a), scipy.stats.sem(a)
+        h = se * scipy.stats.t._ppf((1+confidence)/2., n-1)
+        return m-h, m+h
 
 class Repo(object):
     def __init__(self, working_dir, git_dir=None):
