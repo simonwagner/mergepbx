@@ -7,6 +7,8 @@ Status: Alpha
 
 Follow us on twitter: https://twitter.com/mergepbx
 
+Buy me a cup of tea: [![Donate to mergepbx](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UX3YTWH8DRYVN)
+
 ## Why mergepbx? ##
 
 Tracking a XCode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automagically, if the merge algorithm would be aware of the structure of XCode's project file.
