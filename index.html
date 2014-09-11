@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Mergepbx by simonwagner</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Mergepbx</h1>
+        <h2>script for merging XCode project files in git</h2>
+        <a href="https://github.com/simonwagner/mergepbx" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="mergepbx" class="anchor" href="#mergepbx"><span class="octicon octicon-link"></span></a>mergepbx</h1>
+
+<p>A tool for merging XCode project files in git</p>
+
+<p>Version: 0.3 - 18th January 2014
+Status: Alpha</p>
+
+<p>Follow us on twitter: <a href="https://twitter.com/mergepbx">https://twitter.com/mergepbx</a></p>
+
+<p>Buy me a cup of tea: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=UX3YTWH8DRYVN"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate to mergepbx"></a></p>
+
+<h2>
+<a name="why-mergepbx" class="anchor" href="#why-mergepbx"><span class="octicon octicon-link"></span></a>Why mergepbx?</h2>
+
+<p>Tracking a XCode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automagically, if the merge algorithm would be aware of the structure of XCode's project file.</p>
+
+<p>After long and annoying merge sessions in one of my projects, I came to the conclusion, that writing a merge driver for git which understands the structure of the project file would be a worthwhile endeavour, as it would save me from solving the merge conflicts for my co-workers.</p>
+
+<p>Unfortunately, that script was finished only after the project ended. However, as I didn't want to let the work go to waste, this script is now published as open source under the GNU GPL 3.</p>
+
+<h2>
+<a name="status" class="anchor" href="#status"><span class="octicon octicon-link"></span></a>Status</h2>
+
+<p>This script needs knowledge about the structure of XCode's project. However, there doesn't seem to be any documentation (and I would be surprised if there were any). Luckily, the format of the project file is a plain text Plist, so reverse engineering the structure is rather easy.</p>
+
+<p>Nevertheless, I do not know all possible variants of project files that are out there. Currently, this script works for the projects I worked on, however, you might encounter a project file that has some structures in it that I haven't seen yet.</p>
+
+<p>If the script doesn't work, you might want to open an issue and attach your project file to it.</p>
+
+<p>Note also, that this script can't solve conflicts, that are really conflicts. For example, if you rename a file and a co-worker of yours is going to delete it, well, then you are going to end up in a pretty weird state.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>To use this script, you have to configure it as a merge driver for you project file. To do this, you have to take the following steps:</p>
+
+<h3>
+<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h3>
+
+<p>Execute the following command in the directory of the cloned project:</p>
+
+<pre><code>./build.py
+</code></pre>
+
+<p>That should build the mergepbx executable that you can use. It is a specially crafted zip file that contains all needed python files and can directly be executed on the commandline</p>
+
+<h3>
+<a name="add-script-as-merge-driver" class="anchor" href="#add-script-as-merge-driver"><span class="octicon octicon-link"></span></a>Add script as merge driver</h3>
+
+<p>Open <code>~/.gitconfig</code> (create if it does not exist) and add the following lines to it:</p>
+
+<pre><code>#driver for merging XCode project files
+[merge "mergepbx"]
+        name = XCode project files merger
+        driver = mergepbx %O %A %B
+</code></pre>
+
+<p>Replace mergepbx with the path to the file you downloaded (You might want to add that file to your $PATH)</p>
+
+<h3>
+<a name="configure-your-repository-to-use-the-driver" class="anchor" href="#configure-your-repository-to-use-the-driver"><span class="octicon octicon-link"></span></a>Configure your repository to use the driver</h3>
+
+<p>In your repository root directory, open the file <code>.gitattributes</code> (create if it does not exist). Add the following lines to it:</p>
+
+<pre><code>*.pbxproj merge=mergepbx
+</code></pre>
+
+<h3>
+<a name="merging-project-files" class="anchor" href="#merging-project-files"><span class="octicon octicon-link"></span></a>Merging project files</h3>
+
+<p>If you merge branches with git now, git will automatically use mergepbx for .pbxproj files. You don't have to do anything special, simply merge your branches as before.</p>
+
+<p>Note that this script is not really fast, I didn't optimize it for speed and especially the plist parser is not very fast.</p>
+
+<h2>
+<a name="alternatives" class="anchor" href="#alternatives"><span class="octicon octicon-link"></span></a>Alternatives</h2>
+
+<p>An alternative to using this script, is to use the union merge driver of git, by adding the following line to <code>.gitattributes</code>:</p>
+
+<pre><code>*.pbxproj merge=union
+</code></pre>
+
+<p>This tells git to combine the files by adding lines from both, the remote file and your local file. That works most of the time, however it is not bulletproof, as git still has no idea what it is doing here.
+If my script does not work for you, you can however try out this strategy.</p>
+
+<h2>
+<a name="how-to-help" class="anchor" href="#how-to-help"><span class="octicon octicon-link"></span></a>How to help</h2>
+
+<p>If you encounter a project file that can not be parsed, please open an issue and attach the project file to it. I will then take a look at it and add the missing parts to the script</p>
+
+<h2>
+<a name="contributers" class="anchor" href="#contributers"><span class="octicon octicon-link"></span></a>Contributers</h2>
+
+<ul>
+<li>Simon Wagner</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/simonwagner/mergepbx/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/simonwagner/mergepbx/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/simonwagner/mergepbx"></a> is maintained by <a href="https://github.com/simonwagner">simonwagner</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
