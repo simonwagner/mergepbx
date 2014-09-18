@@ -24,7 +24,7 @@ def read_pbxs(pbx_files):
     projects = []
     for pbx_file in pbx_files:
             f = open(pbx_file)
-            r = NSPlistReader(f)
+            r = NSPlistReader(f, name=pbx_file)
             plist = r.read()
             projects.append(PBXProjFile(plist))
 

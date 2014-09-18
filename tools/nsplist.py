@@ -11,7 +11,7 @@ from plist.nextstep import NSPlistReader, NSPlistWriter
 
 fname = sys.argv[1]
 f = open(fname)
-r = NSPlistReader(f)
+r = NSPlistReader(f, name=fname)
 
 w = NSPlistWriter(sys.stdout)
 w.write(r.read())

@@ -40,7 +40,7 @@ def main():
         install_pdb_exception_handler()
 
     f = open(args.file)
-    r = NSPlistReader(f)
+    r = NSPlistReader(f, name=args.file)
     plist = r.read()
 
 if __name__ == "__main__":

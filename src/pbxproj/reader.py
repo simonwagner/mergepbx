@@ -3,7 +3,7 @@ from .pbxobjects import PBXProjFile
 
 def read_pbx(pbx_file, ignore_unknown_objects=False):
     f = open(pbx_file)
-    r = NSPlistReader(f)
+    r = NSPlistReader(f, name=pbx_file)
     plist = r.read()
     project = PBXProjFile(plist, ignore_unknown_objects=False)
     r.close()

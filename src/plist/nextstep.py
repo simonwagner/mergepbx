@@ -16,8 +16,9 @@ from .escape import escape_string
 
 class NSPlistReader(object):
     CODEC_DEF_RE = re.compile(r"^//\s*!\$\*(.+)\*\$!$") #e.g. "// !$*UTF8*$!"
-    def __init__(self, f):
+    def __init__(self, f, name=None):
         self.f = f
+        self.name = name
 
     def read(self):
         content = self.f.read()

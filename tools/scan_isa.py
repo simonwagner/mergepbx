@@ -12,7 +12,7 @@ from pbxproj.isa import ISA_MAPPING
 
 fname = sys.argv[1]
 f = open(fname)
-r = NSPlistReader(f)
+r = NSPlistReader(f, name=fname)
 project = r.read()
 
 objects = project["objects"]

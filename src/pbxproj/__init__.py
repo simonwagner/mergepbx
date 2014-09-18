@@ -15,10 +15,12 @@ def read(fname_or_f):
     #else use it as f
     if isinstance(fname_or_f, str) or isinstance(fname_or_f, unicode):
         f = open(fname_or_f)
+        fname = fname_or_f
     else:
         f = fname_or_f
+        fname = None
     #read project
-    reader = NSPlistReader(f)
+    reader = NSPlistReader(f, name=fname)
     return PBXProjFile(reader.read(), encoding=reader.get_encoding())
 
 def write(fname_or_f, data, encoding=None):
