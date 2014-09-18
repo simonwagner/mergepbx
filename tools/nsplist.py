@@ -14,4 +14,4 @@ f = open(fname)
 r = NSPlistReader(f, name=fname)
 
 w = NSPlistWriter(sys.stdout)
-w.write(r.read())
+w.write_plist(r.read())
