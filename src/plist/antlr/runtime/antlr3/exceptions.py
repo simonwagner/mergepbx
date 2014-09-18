@@ -113,8 +113,8 @@ class RecognitionException(Exception):
             self.index = input.index()
 
             # late import to avoid cyclic dependencies
-            from antlr3.streams import TokenStream, CharStream
-            from antlr3.tree import TreeNodeStream
+            from .streams import TokenStream, CharStream
+            from .tree import TreeNodeStream
 
             if isinstance(self.input, TokenStream):
                 self.token = self.input.LT(1)
