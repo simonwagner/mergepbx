@@ -13,6 +13,18 @@ import antlr.runtime.antlr3 as antlr3
 
 from .escape import escape_string
 
+class NSParsingException(Exception):
+    def __init__(self, line_nr, col_nr, name=None):
+        self.name = name
+        self.line_nr = line_nr
+        self.col_nr = col_nr
+
+        if self.name is None:
+            message = "Parsing failure at line %r:%r" % (self.line_nr, self.col_nr)
+        else:
+            message = "Parsing failure at line %r:%r" % (self.line_nr, self.col_nr)
+
+        super(NSParsingException, self).__init__(message)
 
 class NSPlistReader(object):
     CODEC_DEF_RE = re.compile(r"^//\s*!\$\*(.+)\*\$!$") #e.g. "// !$*UTF8*$!"
@@ -29,7 +41,10 @@ class NSPlistReader(object):
         lexer = PlistLexer(stream)
         tokens = antlr3.CommonTokenStream(lexer)
         parser = PlistParser(tokens)
-        plist = parser.plist()
+        try:
+            plist = parser.plist()
+        except antlr3.exceptions.RecognitionException as e:
+            raise NSParsingException(line_nr=e.line, col_nr=e.charPositionInLine, name=self.name)
 
         return plist
 
