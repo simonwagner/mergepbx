@@ -2,6 +2,7 @@
 
 import sys
 import os
+import zipfile
 from argparse import ArgumentParser
 
 from plist.nextstep import NSPlistReader
@@ -24,6 +25,9 @@ def get_argument_parser():
     parser.add_argument("-d", "--debug",
                         help="enable debugger on exceptions",
                         action="store_true")
+    parser.add_argument("--dump",
+                        help="dump input files to the specified ZIP file(useful for debugging)",
+                        default=None)
 
     return parser
 
@@ -53,6 +57,11 @@ def main():
     else:
         output = args.mine
 
+    if args.dump is not None:
+        #we have been asked to dump the files that will be merged
+        dump_files(args.dump, args.base, args.mine, args.theirs)
+
+
     if args.debug:
         #if debugging is enabled, install the pdb
         #handler and let him handle the exception
@@ -78,6 +87,14 @@ def read_pbxs(pbx_files):
     projects = [pbxproj.read(pbx_file) for pbx_file in pbx_files]
 
     return projects
+
+def dump_files(dumpfile, base, mine, theirs):
+    files = (base, mine, theirs)
+    arcnames = ("base.pbxproj", "mine.pbxproj", "theirs.pbxproj")
+    with zipfile.ZipFile(dumpfile, "w") as zf:
+        for file, arcname in zip(files, arcnames):
+            zf.write(file, arcname=arcname, compress_type=zipfile.ZIP_DEFLATED)
+
 
 if __name__ == "__main__":
     main()
