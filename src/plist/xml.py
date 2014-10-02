@@ -5,6 +5,10 @@ import xml.dom
 from itertools import islice, izip, tee
 from collections import OrderedDict
 
+ENCODING_ALIASES = {
+    "UTF-8":"UTF8",
+}
+
 class XMLPlistReader(object):
     def __init__(self, f, name=None):
         self._f = f
@@ -61,7 +65,8 @@ class XMLPlistReader(object):
         return _nodeText(element)
 
     def get_encoding(self):
-        return self._encoding
+        encoding = ENCODING_ALIASES.get(self._encoding, self._encoding)
+        return encoding
 
     def close(self):
         self.f.close()
