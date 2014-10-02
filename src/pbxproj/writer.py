@@ -1,4 +1,5 @@
 import re
+import codecs
 
 from plist import NSPlistWriter
 
