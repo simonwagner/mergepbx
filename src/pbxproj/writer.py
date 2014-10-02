@@ -126,3 +126,16 @@ class PBXProjectPlistWriter(NSPlistWriter):
             return None
         else:
             return object.get_name(self.pbxproj)
+
+def write_pbx(fname_or_f, data, encoding=None):
+    if encoding is None:
+        encoding = data.get_encoding() or "utf-8"
+    #open file if fname_or_f is a string
+    #else use it as f
+    if isinstance(fname_or_f, str) or isinstance(fname_or_f, unicode):
+        f = codecs.open(fname_or_f, "w", encoding=encoding)
+    else:
+        f = fname_or_f
+    #write project
+    w = PBXProjectPlistWriter(f)
+    w.write_project(data)
