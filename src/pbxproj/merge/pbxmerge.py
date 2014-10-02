@@ -135,7 +135,7 @@ class PBXProjectFileMerger3(Merger):
         #check if the encoding for all project is
         #the same, otherwise abort
         if base.get_encoding() != theirs.get_encoding() or base.get_encoding() != mine.get_encoding():
-            raise ValueError("merging projects with different encoding is not supported.")
+            raise ValueError("merging projects with different encoding (base=%s, mine=%s, theirs=%s) is not supported." % (base.get_encoding(), mine.get_encoding(), theirs.get_encoding()))
         encoding = mine.get_encoding()
         #use plist for merging
         base, mine, theirs = (base._plist, mine._plist, theirs._plist)
