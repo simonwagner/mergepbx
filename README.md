@@ -5,7 +5,8 @@ A tool for merging XCode project files in git
 Version: 0.3 - 18th January 2014
 Status: Alpha
 
-Follow us on twitter: https://twitter.com/mergepbx
+* Follow us on twitter: https://twitter.com/mergepbx
+* Website: http://simonwagner.github.io/mergepbx/
 
 Buy me a cup of tea: [![Donate to mergepbx](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UX3YTWH8DRYVN)
 
