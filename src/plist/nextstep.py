@@ -9,7 +9,7 @@ except:
 
 from .antlr import PlistLexer
 from .antlr import PlistParser
-import antlr.runtime.antlr3 as antlr3
+from .antlr.runtime import antlr3
 
 from .escape import escape_string
 
