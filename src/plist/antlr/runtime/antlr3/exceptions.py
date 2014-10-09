@@ -181,7 +181,7 @@ class RecognitionException(Exception):
         from .tree import TreeNodeStream
 
         if isinstance(self.input, TokenStream):
-            return self.token.type
+            return self.token.type if self.token is not None else None
 
         elif isinstance(self.input, TreeNodeStream):
             adaptor = self.input.treeAdaptor
