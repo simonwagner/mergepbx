@@ -12,7 +12,7 @@ Buy me a cup of tea: [![Donate to mergepbx](https://www.paypalobjects.com/en_US/
 
 ## Why mergepbx? ##
 
-Tracking a XCode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automagically, if the merge algorithm would be aware of the structure of XCode's project file.
+Tracking a XCode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automatically, if the merge algorithm would be aware of the structure of XCode's project file.
 
 After long and annoying merge sessions in one of my projects, I came to the conclusion, that writing a merge driver for git which understands the structure of the project file would be a worthwhile endeavour, as it would save me from solving the merge conflicts for my co-workers.
 
