@@ -21,9 +21,12 @@ class PBXBuildFile(PBXISA, PBXISADictionaryBound):
         super(PBXBuildFile, self).__init__(*args, **kwargs)
 
     def get_name(self, project):
-        fileRef = self.fileRef
-        file = project.get_objects().get(fileRef)
-        name = file.get_name(project)
+        if self.has_attr("fileRef"):
+            fileRef = self.fileRef
+            file = project.get_objects().get(fileRef)
+            name = file.get_name(project)
+        else:
+            name = "(null)"
         container = project.phase_of_object(self._identifier)
 
         return "%s in %s" % (name, container)
