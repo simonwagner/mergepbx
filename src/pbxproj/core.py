@@ -25,5 +25,14 @@ class DictionaryBoundObject(object):
     def has_attr(self, attr):
         return attr in self._dict
 
+    def get_attr(self, attr, default=Ellipsis):
+        if self.has_attr(attr):
+            return self.get_attr(attr)
+        else:
+            if default is not Ellipsis:
+                return default
+            else:
+                raise KeyError(attr)
+
     def _can_access(self, attr):
         return self._restricted_to_keys == None or attr in self._restricted_to_keys
