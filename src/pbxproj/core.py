@@ -22,5 +22,8 @@ class DictionaryBoundObject(object):
     def iterkeys():
         return self._dict.iterkeys()
 
+    def has_attr(self, attr):
+        return attr in self._dict
+
     def _can_access(self, attr):
         return self._restricted_to_keys == None or attr in self._restricted_to_keys
