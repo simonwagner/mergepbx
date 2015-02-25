@@ -39,6 +39,18 @@ class PBXProjFile(DictionaryBoundObject):
     def get_encoding(self):
         return self._encoding
 
+    def clean_files(self):
+        #remove PBXBuildFile entries that are no longer referenced
+        files = self._objects.getobjects(isa="PBXBuildFile")
+        removed_files = []
+        for (identifier, file) in files:
+            if not file.fileRef in self._objects:
+                removed_files.append(identifier)
+                self._objects.delete(identifier)
+
+        return removed_files
+
+
 class PBXClasses(object):
     def __init__(self, data_dict):
         self.data_dict = data_dict
