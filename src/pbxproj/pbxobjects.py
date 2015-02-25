@@ -57,6 +57,9 @@ class PBXObjects(object):
     def __contains__(self, key):
         return key in self.data_dict
 
+    def delete(self, key):
+        del self.data_dict[key]
+
     def iterobjects(self, isa=None):
         if self.ignore_unknown_objects:
             items_iter = ((key, value) for key,value in self.data_dict.iteritems() if isa.is_known(value["isa"]))
