@@ -76,8 +76,15 @@ def main():
             log.write("merging failed: %s\n" % str(e))
             sys.exit(1)
 
-def merge_pbx_files(basef, minef, theirsf, mergedf):
+def merge_pbx_files(basef, minef, theirsf, mergedf, clean=False):
     base, mine, theirs = read_pbxs((basef, minef, theirsf))
+
+    if clean:
+        for name, project in zip((basef, minef, theirsf), (base, mine, theirs)):
+            files_removed = project.clean_files()
+            if len(files_removed) > 0:
+                print "WARNING: %d dangling file references removed from %s" % (len(files_removed), name)
+
 
     merged_project = merge_pbxs(base, mine, theirs)
 
