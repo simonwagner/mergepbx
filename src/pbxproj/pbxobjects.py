@@ -63,7 +63,9 @@ class PBXObjects(object):
     def keys(self):
         return self.data_dict.keys()
 
-    def get(self, key):
+    def get(self, key, default=Ellipsis):
+        if key not in self.data_dict and default is not Ellipsis:
+            return default
         return self._make_isa_object(key, self.data_dict[key])
 
     def __contains__(self, key):
