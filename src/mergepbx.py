@@ -28,6 +28,9 @@ def get_argument_parser():
     parser.add_argument("--dump",
                         help="dump input files to the specified ZIP file(useful for debugging)",
                         default=None)
+    parser.add_argument("--clean",
+                        help="remove dangling file references in project files",
+                        action="store_true")
 
     return parser
 
@@ -66,18 +69,25 @@ def main():
         #if debugging is enabled, install the pdb
         #handler and let him handle the exception
         install_pdb_exception_handler()
-        merge_pbx_files(args.base, args.mine, args.theirs, output)
+        merge_pbx_files(args.base, args.mine, args.theirs, output, clean=args.clean)
     else:
         #if debugging is not enabled, simply report the exception
         try:
-            merge_pbx_files(args.base, args.mine, args.theirs, output)
+            merge_pbx_files(args.base, args.mine, args.theirs, output, clean=args.clean)
             sys.exit(0)
         except Exception as e:
             log.write("merging failed: %s\n" % str(e))
             sys.exit(1)
 
-def merge_pbx_files(basef, minef, theirsf, mergedf):
+def merge_pbx_files(basef, minef, theirsf, mergedf, clean=False):
     base, mine, theirs = read_pbxs((basef, minef, theirsf))
+
+    if clean:
+        for name, project in zip((basef, minef, theirsf), (base, mine, theirs)):
+            files_removed = project.clean_files()
+            if len(files_removed) > 0:
+                print "WARNING: %d dangling file references removed from %s" % (len(files_removed), name)
+
 
     merged_project = merge_pbxs(base, mine, theirs)
 
