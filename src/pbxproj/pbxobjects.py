@@ -17,8 +17,9 @@ class PBXProjFile(DictionaryBoundObject):
         self._phases = dict()
         phases = (
             ("Frameworks", "PBXFrameworksBuildPhase"),
+            ("Headers", "PBXHeadersBuildPhase"),
             ("Sources", "PBXSourcesBuildPhase"),
-            ("Resources", "PBXResourcesBuildPhase")
+            ("Resources", "PBXResourcesBuildPhase"),
         )
 
         for (section, phase_isa) in phases:
