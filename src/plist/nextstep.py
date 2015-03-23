@@ -204,15 +204,13 @@ class NSPlistWriter(IndentWriter):
         self.write(u"\n)")
 
     def write_set(self, values, comments = ()):
-        self.write(u"(\n")
-        self.indent()
+        self.write(u"(")
 
         for value, comment in izip_longest(values, comments, fillvalue=None):
             self.write_set_item(value, comment)
-            self.write(u",")
+            self.write(u", ")
 
-        self.deindent()
-        self.write(u"\n)")
+        self.write(u")")
 
     def write_set_item(self, value, comment = None):
         self.write_value(value)
