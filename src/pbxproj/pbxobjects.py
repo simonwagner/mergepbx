@@ -14,28 +14,23 @@ class PBXProjFile(DictionaryBoundObject):
         self._encoding = encoding
 
     def _load_phases(self):
-        self._phases = dict()
-        phases = (
-            ("Frameworks", "PBXFrameworksBuildPhase"),
-            ("Headers", "PBXHeadersBuildPhase"),
-            ("Sources", "PBXSourcesBuildPhase"),
-            ("Resources", "PBXResourcesBuildPhase"),
-        )
+        phases = []
 
-        for (section, phase_isa) in phases:
-            phase_objects_with_identifier = self._objects.getobjects(phase_isa)
-            phase_objects = (t[1] for t in phase_objects_with_identifier)
-            self._phases[section] = set(
-                chain.from_iterable(phase_object.files for phase_object in phase_objects)
-            )
+        for identifier, object in self._objects.getobjects():
+            if isinstance(object, isa.AbstractPBXBuildPhase):
+                phases.append(object)
+
+        self._phases_files = {
+            phase : set(phase.files) for phase in phases
+        }
 
     def get_objects(self):
         return self._objects
 
     def phase_of_object(self, identifier):
-        for phase, files in self._phases.iteritems():
+        for phase, files in self._phases_files.iteritems():
             if identifier in files:
-                return phase
+                return phase.get_name(self)
 
     def get_encoding(self):
         return self._encoding
