@@ -35,19 +35,45 @@ class PBXBuildFile(PBXISA, PBXISADictionaryBound):
 
         return "%s in %s" % (name, container)
 
+class AbstractPBXBuildPhase(PBXISADictionaryBound):
+    def __init__(self, *args, **kwargs):
+        super(AbstractPBXBuildPhase, self).__init__(*args, **kwargs)
+
+    def get_name(self, project):
+        if self.has_attr("name"):
+            name = self.name
+            return name
+        else:
+            default_name = getattr(self.__class__, "DEFAULT_NAME", None)
+            if default_name is not None:
+                return default_name
+            else:
+                return "(null)"
+
+class PBXCopyFilesBuildPhase(AbstractPBXBuildPhase, PBXISA):
+    pass
+
+class PBXFrameworksBuildPhase(AbstractPBXBuildPhase, PBXISA):
+    DEFAULT_NAME = "Frameworks"
+
+class PBXResourcesBuildPhase(AbstractPBXBuildPhase, PBXISA):
+    DEFAULT_NAME = "Resources"
+
+class PBXShellScriptBuildPhase(AbstractPBXBuildPhase, PBXISA):
+    DEFAULT_NAME = "ShellScript"
+
+class PBXSourcesBuildPhase(AbstractPBXBuildPhase, PBXISA):
+    DEFAULT_NAME = "Sources"
+
+class PBXHeadersBuildPhase(AbstractPBXBuildPhase, PBXISA):
+    DEFAULT_NAME = "Headers"
+
 class PBXContainerItemProxy(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
         super(PBXContainerItemProxy, self).__init__(*args, **kwargs)
 
     def get_name(self, project):
         return "PBXContainerItemProxy"
-
-class PBXCopyFilesBuildPhase(PBXISA, PBXISADictionaryBound):
-    def __init__(self, *args, **kwargs):
-        super(PBXCopyFilesBuildPhase, self).__init__(*args, **kwargs)
-
-    def get_name(self, project):
-        return "CopyFiles"
 
 class PBXFileReference(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
@@ -58,13 +84,6 @@ class PBXFileReference(PBXISA, PBXISADictionaryBound):
             return self.name
         else:
             return self.path.split("/")[-1]
-
-class PBXFrameworksBuildPhase(PBXISA, PBXISADictionaryBound):
-    def __init__(self, *args, **kwargs):
-        super(PBXFrameworksBuildPhase, self).__init__(*args, **kwargs)
-
-    def get_name(self, project):
-        return "Frameworks"
 
 class PBXGroup(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
@@ -112,37 +131,6 @@ class PBXReferenceProxy(PBXISA, PBXISADictionaryBound):
 
     def get_name(self, project):
         return self.path
-
-class PBXResourcesBuildPhase(PBXISA, PBXISADictionaryBound):
-    def __init__(self, *args, **kwargs):
-        super(PBXResourcesBuildPhase, self).__init__(*args, **kwargs)
-
-    def get_name(self, project):
-        return "Resources"
-
-class PBXShellScriptBuildPhase(PBXISA, PBXISADictionaryBound):
-    def __init__(self, *args, **kwargs):
-        super(PBXShellScriptBuildPhase, self).__init__(*args, **kwargs)
-
-    def get_name(self, project):
-        if hasattr(self, "name"):
-            return self.name
-        else:
-            return "ShellScript"
-
-class PBXSourcesBuildPhase(PBXISA, PBXISADictionaryBound):
-    def __init__(self, *args, **kwargs):
-        super(PBXSourcesBuildPhase, self).__init__(*args, **kwargs)
-
-    def get_name(self, project):
-        return "Sources"
-
-class PBXHeadersBuildPhase(PBXISA, PBXISADictionaryBound):
-    def __init__(self, *args, **kwargs):
-        super(PBXHeadersBuildPhase, self).__init__(*args, **kwargs)
-
-    def get_name(self, project):
-        return "Headers"
 
 class PBXTargetDependency(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
