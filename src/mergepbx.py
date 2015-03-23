@@ -29,8 +29,13 @@ def get_argument_parser():
                         help="dump input files to the specified ZIP file(useful for debugging)",
                         default=None)
     parser.add_argument("--clean",
-                        help="remove dangling file references in project files",
-                        action="store_true")
+                        help="remove dangling file references in project files (obsolete, on by default)",
+                        action="store_true",
+                        default=True)
+    parser.add_argument("--no-clean",
+                        dest="clean",
+                        help="don't remove dangling file references in project files",
+                        action="store_false")
 
     return parser
 
@@ -63,7 +68,6 @@ def main():
     if args.dump is not None:
         #we have been asked to dump the files that will be merged
         dump_files(args.dump, args.base, args.mine, args.theirs)
-
 
     if args.debug:
         #if debugging is enabled, install the pdb
