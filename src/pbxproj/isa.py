@@ -1,13 +1,17 @@
 from .core import DictionaryBoundObject
 from inspect import isclass
+import abc
 
 class PBXISA(object):
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self, identifier, *args, **kwargs):
         self._identifier = identifier
         super(PBXISA, self).__init__(identifier, *args, **kwargs)
 
+    @abc.abstractmethod
     def get_name(self, project):
-        return None
+        raise NotImplementedError
 
     def get_identifier(self):
         return self._identifier
