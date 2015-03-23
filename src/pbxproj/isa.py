@@ -133,6 +133,13 @@ class PBXSourcesBuildPhase(PBXISA, PBXISADictionaryBound):
     def get_name(self, project):
         return "Sources"
 
+class PBXHeadersBuildPhase(PBXISA, PBXISADictionaryBound):
+    def __init__(self, *args, **kwargs):
+        super(PBXHeadersBuildPhase, self).__init__(*args, **kwargs)
+
+    def get_name(self, project):
+        return "Headers"
+
 class PBXTargetDependency(PBXISA, PBXISADictionaryBound):
     def __init__(self, *args, **kwargs):
         super(PBXTargetDependency, self).__init__(*args, **kwargs)
