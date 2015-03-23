@@ -300,9 +300,6 @@ class PBXProjectMerger3(_SimpleDictMerger3):
 class PBXSourcesBuildPhaseMerger3(_SimpleDictMerger3):
     merge_files = create_auto_merge_set("files")
 
-class PBXHeadersBuildPhaseMerger3(_SimpleDictMerger3):
-    merge_files = create_auto_merge_set("files")
-
 class XCBuildConfigurationMerger3(_SimpleDictMerger3):
     def merge_buildSettings(self, base, mine, theirs, result, diff3):
         attribute = "buildSettings"
