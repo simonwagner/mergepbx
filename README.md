@@ -42,7 +42,33 @@ Execute the following command in the directory of the cloned project:
 
 That should build the mergepbx executable that you can use. It is a specially crafted zip file that contains all needed python files and can directly be executed on the commandline
 
-### Add script as merge driver ###
+### Using mergepbx as merge tool ###
+
+You can add mergepbx as a merge tool, so you can use it to manually start merging the project file with `git mergetool --tool=mergepbx PROJECT.pbxproj`.
+
+#### Add mergepbx as a merge tool ####
+
+Open `~/.gitconfig` (create if it does not exist) and add the following lines to it:
+
+```
+#driver for merging XCode project files
+[mergetool "mergepbx"]
+	cmd = mergepbx "$BASE" "$LOCAL" "$REMOTE" -o "$MERGED"
+```
+
+#### Merging project files ####
+
+After you have encountered a failed automatic merge, you can now use the following command to start the automatic merge with `mergepbx`:
+
+```
+git mergetool --tool=mergepbx PROJECT.pbxproj
+```
+
+Afterwards, the project file should be merged and marked as resolved.
+
+### Using mergepbx as a merge driver ###
+
+You can also configure git to always use `mergepbx` automatically, when it encounters a conflict in a project file
 
 Open `~/.gitconfig` (create if it does not exist) and add the following lines to it:
 
@@ -55,7 +81,7 @@ Open `~/.gitconfig` (create if it does not exist) and add the following lines to
 
 Replace mergepbx with the path to the file you downloaded (You might want to add that file to your $PATH)
 
-### Configure your repository to use the driver ###
+#### Configure your repository to use the driver ####
 
 In your repository root directory, open the file `.gitattributes` (create if it does not exist). Add the following lines to it:
 
@@ -63,7 +89,7 @@ In your repository root directory, open the file `.gitattributes` (create if it 
 *.pbxproj merge=mergepbx
 ```
 
-### Merging project files ###
+#### Merging project files ####
 
 If you merge branches with git now, git will automatically use mergepbx for .pbxproj files. You don't have to do anything special, simply merge your branches as before.
 
