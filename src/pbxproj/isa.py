@@ -201,6 +201,7 @@ def is_known(isa):
 
 def create(identifier, isa_dict):
     isa = isa_dict["isa"]
-    isa_class = ISA_MAPPING[isa]
-
+    isa_class = ISA_MAPPING.get(isa, None)
+    if isa_class is None:
+        raise ValueError("Unknown entry in project file: %s" % isa)
     return isa_class(identifier, isa_dict)
