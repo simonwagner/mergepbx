@@ -1,6 +1,6 @@
 # mergepbx #
 
-A tool for merging XCode project files in git
+A tool for merging Xcode project files in git
 
 Version: 0.6 - 2nd Oct 2014
 Status: Alpha
@@ -12,7 +12,7 @@ Buy me a cup of tea: [![Donate to mergepbx](https://www.paypalobjects.com/en_US/
 
 ## Why mergepbx? ##
 
-Tracking a XCode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automatically, if the merge algorithm would be aware of the structure of XCode's project file.
+Tracking a Xcode project in a version control system is annoying. Simply adding files can lead to merge conflicts that have to be solved manually, although it would be possible to resolve the conflict automatically, if the merge algorithm would be aware of the structure of Xcode's project file.
 
 After long and annoying merge sessions in one of my projects, I came to the conclusion, that writing a merge driver for git which understands the structure of the project file would be a worthwhile endeavour, as it would save me from solving the merge conflicts for my co-workers.
 
@@ -20,7 +20,7 @@ Unfortunately, that script was finished only after the project ended. However, a
 
 ## Status ##
 
-This script needs knowledge about the structure of XCode's project. However, there doesn't seem to be any documentation (and I would be surprised if there were any). Luckily, the format of the project file is a plain text Plist, so reverse engineering the structure is rather easy.
+This script needs knowledge about the structure of Xcode's project. However, there doesn't seem to be any documentation (and I would be surprised if there were any). Luckily, the format of the project file is a plain text Plist, so reverse engineering the structure is rather easy.
 
 Nevertheless, I do not know all possible variants of project files that are out there. Currently, this script works for the projects I worked on, however, you might encounter a project file that has some structures in it that I haven't seen yet.
 
@@ -51,7 +51,7 @@ You can add mergepbx as a merge tool, so you can use it to manually start mergin
 Open `~/.gitconfig` (create if it does not exist) and add the following lines to it:
 
 ```
-#driver for merging XCode project files
+#driver for merging Xcode project files
 [mergetool "mergepbx"]
 	cmd = mergepbx "$BASE" "$LOCAL" "$REMOTE" -o "$MERGED"
 ```
@@ -73,9 +73,9 @@ You can also configure git to always use `mergepbx` automatically, when it encou
 Open `~/.gitconfig` (create if it does not exist) and add the following lines to it:
 
 ```
-#driver for merging XCode project files
+#driver for merging Xcode project files
 [merge "mergepbx"]
-        name = XCode project files merger
+        name = Xcode project files merger
         driver = mergepbx %O %A %B
 ```
 
