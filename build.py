@@ -26,8 +26,8 @@ if [ ! -x "$PYTHON" ] ; then
     echo "Please install Python (>= 2.3) to run this program"
     exit 1
 fi
-exec $PYTHON - $0 $@ << END_OF_PYTHON_CODE
 
+read -r -d '' PYTHON_CODE << END_OF_PYTHON_CODE
 import sys
 sys.path.insert(0, sys.argv[1])
 del sys.argv[0:1]
@@ -35,6 +35,8 @@ import %(mainmodule)s
 %(mainmodule)s.main()
 
 END_OF_PYTHON_CODE
+
+exec $PYTHON -c "${PYTHON_CODE}" "${0}" "${@}"
 """
 
 class Manifest(object):
