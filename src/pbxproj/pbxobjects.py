@@ -40,6 +40,8 @@ class PBXProjFile(DictionaryBoundObject):
         files = self._objects.getobjects(isa="PBXBuildFile")
         removed_files = []
         for (identifier, file) in files:
+            if not file.has_attr("fileRef"):
+                continue
             if not file.fileRef in self._objects:
                 removed_files.append(identifier)
                 self._objects.delete(identifier)
