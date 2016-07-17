@@ -1,7 +1,7 @@
 [build]
 mainmodule=mergepbx
 mainmodule_path=src/mergepbx.py
-modules=orderedset,pbxproj,plist
+modules=orderedset,pbxproj,plist,merge3
 default_target=mergepbx
 
 [orderedset]
@@ -12,3 +12,6 @@ path=src/pbxproj
 
 [plist]
 path=src/plist
+
+[merge3]
+path=src/merge3

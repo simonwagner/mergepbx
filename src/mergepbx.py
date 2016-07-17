@@ -4,11 +4,13 @@ import sys
 import os
 import zipfile
 from argparse import ArgumentParser
+import io
 
 from plist.nextstep import NSPlistReader
 import pbxproj
 from pbxproj.merge import merge_pbxs
 from pbxproj.merge.pbxmerge import MergeException
+import merge3
 
 def get_argument_parser():
     parser = ArgumentParser()
@@ -81,6 +83,10 @@ def main():
             sys.exit(0)
         except Exception as e:
             log.write("merging failed: %s\n" % str(e))
+            log.write("falling back to 3-way text merge for Xcode project file...\n")
+
+
+            merge_text_files(args.base, args.mine, args.theirs, output)
             sys.exit(1)
 
 def merge_pbx_files(basef, minef, theirsf, mergedf, clean=False):
@@ -109,6 +115,12 @@ def dump_files(dumpfile, base, mine, theirs):
         for file, arcname in zip(files, arcnames):
             zf.write(file, arcname=arcname, compress_type=zipfile.ZIP_DEFLATED)
 
+def merge_text_files(basef, minef, theirsf, mergedf):
+    baselines, mylines, theirlines = [io.open(f, "r", encoding="utf-8").read().splitlines() for f in (basef, minef, theirsf)]
+    result = merge3.merge(origtext=baselines, yourtext=mylines, theirtext=theirlines)
+    mergedlines = result["body"]
+
+    io.open(mergedf, "w", encoding="utf-8").write(str.join("\n", mergedlines))
 
 if __name__ == "__main__":
     main()
