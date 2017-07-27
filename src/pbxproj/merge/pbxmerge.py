@@ -2,6 +2,7 @@ from collections import namedtuple, OrderedDict
 from orderedset import OrderedSet
 from inspect import isclass
 import logging
+import warnings
 
 from .coremerge import *
 from ..pbxobjects import PBXProjFile
@@ -127,7 +128,8 @@ def create_auto_merge_dict(attribute, optional = False):
 
 class PBXProjectFileMerger3(Merger):
     SUPPORTED_ARCHIVE_VERSIONS = set((1,))
-    SUPPORTED_OBJECT_VERSIONS = set((46,))
+    SUPPORTED_OBJECT_VERSIONS = set((46,47))
+    EXPERIMENTAL_OBJECT_VERSIONS = set((47,))
 
     def merge(self, base, mine, theirs):
         result = OrderedDict()
@@ -171,6 +173,8 @@ class PBXProjectFileMerger3(Merger):
             raise MergeException("can not merge projects with different objectVersion")
         if not int(objectVersion.base) in self.SUPPORTED_OBJECT_VERSIONS:
             raise MergeException("can not merge projects with objectVersion %s" % objectVersion.base)
+        if int(objectVersion.base) in self.EXPERIMENTAL_OBJECT_VERSIONS:
+            warnings.warn(message="Support for object version %d is still experimental" % int(objectVersion.base))
 
         result["objectVersion"] = objectVersion.base
 
